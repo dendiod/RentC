@@ -8,20 +8,12 @@ namespace RentC.ConsoleApp
 {
     class Program
     {
-        static void WriteEmptyLines(int num)
+        private static void WelcommmingScreen()
         {
-            for (int i = 0; i < num; ++i)
-            {
-                Console.WriteLine();
-            }
-        }
-        static void WelcommmingScreen()
-        {
-            Console.WriteLine("    Welcome to RentC, your brand new solution to");
-            Console.WriteLine("    manage and control your company's data");
-            Console.WriteLine("    without missing anything");
-            WriteEmptyLines(5);
-            Console.WriteLine("    Press ENTER to continue or ESC to quit");
+            Console.WriteLine("\tWelcome to RentC, your brand new solution to");
+            Console.WriteLine("\tmanage and control your company's data");
+            Console.WriteLine("\twithout missing anything\n\n\n\n\n");
+            Console.WriteLine("\tPress ENTER to continue or ESC to quit");
             while (true)
             {
                 ConsoleKey consoleKey = Console.ReadKey().Key;
@@ -36,29 +28,36 @@ namespace RentC.ConsoleApp
                 }
             }
         }
-        static void Menu()
+        private static void Menu()
         {
             Console.Clear();
-            WriteEmptyLines(3);
-            Console.WriteLine(" 1 Register new Car Rent");
-            Console.WriteLine(" 2 Update Car Rent");
-            Console.WriteLine(" 3 List Rents");
-            Console.WriteLine(" 4 List Available Cars");
-            Console.WriteLine(" 5 Register new Customer");
-            Console.WriteLine(" 6 Update Customer");
-            Console.WriteLine(" 7 List Customers");
-            Console.WriteLine(" 8 Quit");
-            WriteEmptyLines(3);
+            Console.WriteLine("\n\n\n\t1 Register new Car Rent");
+            Console.WriteLine("\t2 Update Car Rent");
+            Console.WriteLine("\t3 List Rents");
+            Console.WriteLine("\t4 List Available Cars");
+            Console.WriteLine("\t5 Register new Customer");
+            Console.WriteLine("\t6 Update Customer");
+            Console.WriteLine("\t7 List Customers");
+            Console.WriteLine("\t8 Quit\n\n\n");
             string input = Console.ReadLine();
             switch (input)
             {
                 case "4":
-                    Console.WriteLine("yee");
+                    GetAvailableCars();
                     break;
                 default:
                     break;
             }
         }
+
+        private static void GetAvailableCars()
+        {
+            Localhost.WebService1 webService = new Localhost.WebService1();
+            Console.WriteLine(webService.MyMethod());
+            Console.ReadKey();
+
+        }
+
         static void Main(string[] args)
         {
             WelcommmingScreen();
