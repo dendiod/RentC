@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
-using System.Data;
-using System.Configuration;
-using System.Data.SqlClient;
 
 namespace RentC.MyWebService
 {
@@ -22,26 +19,9 @@ namespace RentC.MyWebService
     {
 
         [WebMethod]
-        public string MyMethod()
+        public object[] AccessService(string sql, string[]columns, object[]param)
         {
-            string result = "";
-            var con = ConfigurationManager.ConnectionStrings["academy_net"].ToString();
-            using (SqlConnection myConnection = new SqlConnection(con))
-            {
-                string oString = "Select Count(CarId) FROM Cars";
-                SqlCommand oCmd = new SqlCommand(oString, myConnection);          
-                myConnection.Open();
-                using (SqlDataReader oReader = oCmd.ExecuteReader())
-                {
-                    while (oReader.Read())
-                    {    
-                        result = oReader[""].ToString();                       
-                    }
-
-                    myConnection.Close();
-                }               
-            }
-            return result;
+            return DatabaseConnection.GetAvailableCars(sql, columns, param);
         }
     }
 }

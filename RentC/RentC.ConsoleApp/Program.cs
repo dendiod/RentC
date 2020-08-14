@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RentC.MyWebService;
 
 namespace RentC.ConsoleApp
 {
@@ -42,6 +43,9 @@ namespace RentC.ConsoleApp
             string input = Console.ReadLine();
             switch (input)
             {
+                case "2":
+                    NewCustomer();
+                    break;
                 case "4":
                     GetAvailableCars();
                     break;
@@ -50,17 +54,26 @@ namespace RentC.ConsoleApp
             }
         }
 
+        private static void NewCustomer()
+        {
+            IsCustomerExists();
+        }
+
+        private static void IsCustomerExists()
+        {
+            bool exists = DatabaseConnection.GetAvailableCars("Select 1 From Customers WHERE Id")
+        }
+
         private static void GetAvailableCars()
         {
             Localhost.WebService1 webService = new Localhost.WebService1();
-            Console.WriteLine(webService.MyMethod());
-            Console.ReadKey();
-
+            Console.WriteLine(webService.AccessService("Select Count(CarId) FROM Cars", new string[] { "" })[0], new object[0]);
         }
 
         static void Main(string[] args)
         {
             WelcommmingScreen();
+            Console.ReadKey();
         }
     }
 }

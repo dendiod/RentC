@@ -74,6 +74,12 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RentC.MyWebService\RentC.MyWebService.csproj">
+      <Project>{5a38255d-8fb2-410d-96b9-337a2515979d}</Project>
+      <Name>RentC.MyWebService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>

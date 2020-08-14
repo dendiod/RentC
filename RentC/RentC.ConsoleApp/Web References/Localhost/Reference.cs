@@ -27,9 +27,10 @@ namespace RentC.ConsoleApp.Localhost {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="WebService1Soap", Namespace="http://tempuri.org/")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(object[]))]
     public partial class WebService1 : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
-        private System.Threading.SendOrPostCallback MyMethodOperationCompleted;
+        private System.Threading.SendOrPostCallback AccessServiceOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -70,32 +71,36 @@ namespace RentC.ConsoleApp.Localhost {
         }
         
         /// <remarks/>
-        public event MyMethodCompletedEventHandler MyMethodCompleted;
+        public event AccessServiceCompletedEventHandler AccessServiceCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/MyMethod", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string MyMethod() {
-            object[] results = this.Invoke("MyMethod", new object[0]);
-            return ((string)(results[0]));
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/AccessService", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public object[] AccessService(string sql, string[] columns) {
+            object[] results = this.Invoke("AccessService", new object[] {
+                        sql,
+                        columns});
+            return ((object[])(results[0]));
         }
         
         /// <remarks/>
-        public void MyMethodAsync() {
-            this.MyMethodAsync(null);
+        public void AccessServiceAsync(string sql, string[] columns) {
+            this.AccessServiceAsync(sql, columns, null);
         }
         
         /// <remarks/>
-        public void MyMethodAsync(object userState) {
-            if ((this.MyMethodOperationCompleted == null)) {
-                this.MyMethodOperationCompleted = new System.Threading.SendOrPostCallback(this.OnMyMethodOperationCompleted);
+        public void AccessServiceAsync(string sql, string[] columns, object userState) {
+            if ((this.AccessServiceOperationCompleted == null)) {
+                this.AccessServiceOperationCompleted = new System.Threading.SendOrPostCallback(this.OnAccessServiceOperationCompleted);
             }
-            this.InvokeAsync("MyMethod", new object[0], this.MyMethodOperationCompleted, userState);
+            this.InvokeAsync("AccessService", new object[] {
+                        sql,
+                        columns}, this.AccessServiceOperationCompleted, userState);
         }
         
-        private void OnMyMethodOperationCompleted(object arg) {
-            if ((this.MyMethodCompleted != null)) {
+        private void OnAccessServiceOperationCompleted(object arg) {
+            if ((this.AccessServiceCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.MyMethodCompleted(this, new MyMethodCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.AccessServiceCompleted(this, new AccessServiceCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -120,26 +125,26 @@ namespace RentC.ConsoleApp.Localhost {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
-    public delegate void MyMethodCompletedEventHandler(object sender, MyMethodCompletedEventArgs e);
+    public delegate void AccessServiceCompletedEventHandler(object sender, AccessServiceCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MyMethodCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class AccessServiceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal MyMethodCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal AccessServiceCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public string Result {
+        public object[] Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((object[])(this.results[0]));
             }
         }
     }

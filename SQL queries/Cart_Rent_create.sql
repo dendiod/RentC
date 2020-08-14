@@ -27,6 +27,7 @@ CREATE TABLE Cars (
     ManufacturerId INT NOT NULL REFERENCES Manufacturers(Id) ON DELETE CASCADE,
     ModelId INT NOT NULL REFERENCES Models(Id) ON DELETE CASCADE,
     PricePerDay money  NOT NULL,
+	LocationId INT NOT NULL REFERENCES Locations(Id) ON DELETE CASCADE,
     CONSTRAINT Cars_pk PRIMARY KEY  (CarID)
 );
 
@@ -71,7 +72,7 @@ CREATE TABLE Reservations (
     ReservStatsID tinyint  NOT NULL,
     StartDate date  NOT NULL,
     EndDate date  NOT NULL,
-    Location varchar(50)  NOT NULL,
+    LocationId INT NOT NULL REFERENCES Locations(Id) ON DELETE CASCADE,
     CouponCode varchar(10)  NULL
 );
 
