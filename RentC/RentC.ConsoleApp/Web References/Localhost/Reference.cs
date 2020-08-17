@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace RentC.ConsoleApp.Localhost {
+namespace RentC.ConsoleApp.localhost {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -26,17 +26,16 @@ namespace RentC.ConsoleApp.Localhost {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Web.Services.WebServiceBindingAttribute(Name="WebService1Soap", Namespace="http://tempuri.org/")]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(object[]))]
-    public partial class WebService1 : System.Web.Services.Protocols.SoapHttpClientProtocol {
+    [System.Web.Services.WebServiceBindingAttribute(Name="AvailableCarsServiceSoap", Namespace="http://tempuri.org/")]
+    public partial class AvailableCarsService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
-        private System.Threading.SendOrPostCallback AccessServiceOperationCompleted;
+        private System.Threading.SendOrPostCallback GetAvailableCarsOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
-        public WebService1() {
-            this.Url = global::RentC.ConsoleApp.Properties.Settings.Default.RentC_ConsoleApp_Localhost_WebService1;
+        public AvailableCarsService() {
+            this.Url = global::RentC.ConsoleApp.Properties.Settings.Default.RentC_ConsoleApp_localhost_AvailableCarsService;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -71,36 +70,34 @@ namespace RentC.ConsoleApp.Localhost {
         }
         
         /// <remarks/>
-        public event AccessServiceCompletedEventHandler AccessServiceCompleted;
+        public event GetAvailableCarsCompletedEventHandler GetAvailableCarsCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/AccessService", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public object[] AccessService(string sql, string[] columns) {
-            object[] results = this.Invoke("AccessService", new object[] {
-                        sql,
-                        columns});
-            return ((object[])(results[0]));
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAvailableCars", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public QueryCar[] GetAvailableCars(bool asc) {
+            object[] results = this.Invoke("GetAvailableCars", new object[] {
+                        asc});
+            return ((QueryCar[])(results[0]));
         }
         
         /// <remarks/>
-        public void AccessServiceAsync(string sql, string[] columns) {
-            this.AccessServiceAsync(sql, columns, null);
+        public void GetAvailableCarsAsync(bool asc) {
+            this.GetAvailableCarsAsync(asc, null);
         }
         
         /// <remarks/>
-        public void AccessServiceAsync(string sql, string[] columns, object userState) {
-            if ((this.AccessServiceOperationCompleted == null)) {
-                this.AccessServiceOperationCompleted = new System.Threading.SendOrPostCallback(this.OnAccessServiceOperationCompleted);
+        public void GetAvailableCarsAsync(bool asc, object userState) {
+            if ((this.GetAvailableCarsOperationCompleted == null)) {
+                this.GetAvailableCarsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableCarsOperationCompleted);
             }
-            this.InvokeAsync("AccessService", new object[] {
-                        sql,
-                        columns}, this.AccessServiceOperationCompleted, userState);
+            this.InvokeAsync("GetAvailableCars", new object[] {
+                        asc}, this.GetAvailableCarsOperationCompleted, userState);
         }
         
-        private void OnAccessServiceOperationCompleted(object arg) {
-            if ((this.AccessServiceCompleted != null)) {
+        private void OnGetAvailableCarsOperationCompleted(object arg) {
+            if ((this.GetAvailableCarsCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.AccessServiceCompleted(this, new AccessServiceCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.GetAvailableCarsCompleted(this, new GetAvailableCarsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -124,27 +121,108 @@ namespace RentC.ConsoleApp.Localhost {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class QueryCar {
+        
+        private string plateField;
+        
+        private string manufacturerField;
+        
+        private string modelField;
+        
+        private string locationField;
+        
+        private System.DateTime startDateField;
+        
+        private System.DateTime endDateField;
+        
+        /// <remarks/>
+        public string Plate {
+            get {
+                return this.plateField;
+            }
+            set {
+                this.plateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Manufacturer {
+            get {
+                return this.manufacturerField;
+            }
+            set {
+                this.manufacturerField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Model {
+            get {
+                return this.modelField;
+            }
+            set {
+                this.modelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Location {
+            get {
+                return this.locationField;
+            }
+            set {
+                this.locationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.DateTime StartDate {
+            get {
+                return this.startDateField;
+            }
+            set {
+                this.startDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public System.DateTime EndDate {
+            get {
+                return this.endDateField;
+            }
+            set {
+                this.endDateField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
-    public delegate void AccessServiceCompletedEventHandler(object sender, AccessServiceCompletedEventArgs e);
+    public delegate void GetAvailableCarsCompletedEventHandler(object sender, GetAvailableCarsCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class AccessServiceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetAvailableCarsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal AccessServiceCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal GetAvailableCarsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public object[] Result {
+        public QueryCar[] Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((object[])(this.results[0]));
+                return ((QueryCar[])(this.results[0]));
             }
         }
     }

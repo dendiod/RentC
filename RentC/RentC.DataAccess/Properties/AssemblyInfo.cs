@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RentC.MyWebService")]
+[assembly: AssemblyTitle("RentC.DataAccess")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RentC.MyWebService")]
+[assembly: AssemblyProduct("RentC.DataAccess")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5a38255d-8fb2-410d-96b9-337a2515979d")]
+[assembly: Guid("18f3d4ef-a5e1-4365-955b-706a0f57458c")]
 
 // Version information for an assembly consists of the following four values:
 //

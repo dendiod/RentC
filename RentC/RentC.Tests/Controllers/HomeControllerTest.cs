@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentC.WebUI;
 using RentC.WebUI.Controllers;
 
-namespace RentC.WebUI.Tests.Controllers
+namespace RentC.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest

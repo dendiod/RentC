@@ -22,13 +22,12 @@ CREATE TABLE Locations (
 
 -- Table: Cars
 CREATE TABLE Cars (
-    CarID int  NOT NULL IDENTITY(1, 1),
+    Id int  IDENTITY PRIMARY KEY,
     Plate varchar(10)  NOT NULL,
     ManufacturerId INT NOT NULL REFERENCES Manufacturers(Id) ON DELETE CASCADE,
     ModelId INT NOT NULL REFERENCES Models(Id) ON DELETE CASCADE,
     PricePerDay money  NOT NULL,
-	LocationId INT NOT NULL REFERENCES Locations(Id) ON DELETE CASCADE,
-    CONSTRAINT Cars_pk PRIMARY KEY  (CarID)
+	LocationId INT NOT NULL REFERENCES Locations(Id) ON DELETE CASCADE
 );
 
 -- Table: Coupons
@@ -41,11 +40,10 @@ CREATE TABLE Coupons (
 
 -- Table: Customers
 CREATE TABLE Customers (
-    CostumerID int  NOT NULL IDENTITY(1, 1),
+    Id int  IDENTITY PRIMARY KEY,
     Name varchar(50)  NOT NULL,
     BirthDate date  NOT NULL,
-    LocationId INT NOT NULL REFERENCES Locations(Id) ON DELETE CASCADE,
-    CONSTRAINT Customers_pk PRIMARY KEY  (CostumerID)
+    LocationId INT REFERENCES Locations(Id) ON DELETE CASCADE
 );
 
 -- Table: Permissions
@@ -67,8 +65,8 @@ CREATE TABLE ReservationStatuses (
 -- Table: Reservations
 CREATE TABLE Reservations (
 	Id int identity PRIMARY KEY,
-    CarID int  NOT NULL,
-    CostumerID int  NOT NULL,
+    CarId INT NOT NULL REFERENCES Cars(Id),
+    CustomerId int  NOT NULL REFERENCES Customers(Id),
     ReservStatsID tinyint  NOT NULL,
     StartDate date  NOT NULL,
     EndDate date  NOT NULL,
@@ -101,20 +99,10 @@ CREATE TABLE Users (
 );
 
 -- foreign keys
--- Reference: Reservations_Cars (table: Reservations)
-ALTER TABLE Reservations ADD CONSTRAINT Reservations_Cars
-    FOREIGN KEY (CarID)
-    REFERENCES Cars (CarID);
-
 -- Reference: Reservations_Coupons (table: Reservations)
 ALTER TABLE Reservations ADD CONSTRAINT Reservations_Coupons
     FOREIGN KEY (CouponCode)
     REFERENCES Coupons (CouponCode);
-
--- Reference: Reservations_Customers (table: Reservations)
-ALTER TABLE Reservations ADD CONSTRAINT Reservations_Customers
-    FOREIGN KEY (CostumerID)
-    REFERENCES Customers (CostumerID);
 
 -- Reference: Reservations_ReservationStatuses (table: Reservations)
 ALTER TABLE Reservations ADD CONSTRAINT Reservations_ReservationStatuses

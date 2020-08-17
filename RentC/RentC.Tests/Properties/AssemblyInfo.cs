@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RentC.WebUI.Tests")]
+[assembly: AssemblyTitle("RentC.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RentC.WebUI.Tests")]
+[assembly: AssemblyProduct("RentC.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6ac15a6c-f731-409a-abc7-f2d704af8540")]
+[assembly: Guid("3093e33a-724f-4757-8e9a-15249860c2f1")]
 
 // Version information for an assembly consists of the following four values:
 //

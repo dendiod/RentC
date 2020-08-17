@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3BB3BC41-C425-4335-92B9-0AEDC67473A7}</ProjectGuid>
+    <ProjectGuid>{722A0584-B84C-40B0-B713-1C8E9728DEFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RentC.Core</RootNamespace>
@@ -41,6 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Manufacturer.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\QueryModels\QueryCar.cs" />
+    <Compile Include="Models\QueryModels\QueryCustomer.cs" />
+    <Compile Include="Models\QueryModels\QueryReservation.cs" />
+    <Compile Include="Models\Reservation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

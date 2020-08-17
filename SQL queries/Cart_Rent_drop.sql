@@ -2,11 +2,7 @@
 -- Last modification date: 2018-04-26 02:00:00.8
 use academy_net
 -- foreign keys
-ALTER TABLE Reservations DROP CONSTRAINT Reservations_Cars;
-
 ALTER TABLE Reservations DROP CONSTRAINT Reservations_Coupons;
-
-ALTER TABLE Reservations DROP CONSTRAINT Reservations_Customers;
 
 ALTER TABLE Reservations DROP CONSTRAINT Reservations_ReservationStatuses;
 
@@ -17,11 +13,7 @@ ALTER TABLE RolesPermissions DROP CONSTRAINT ScreenPermissions_Roles;
 ALTER TABLE Users DROP CONSTRAINT Users_Roles;
 
 -- tables
-DROP TABLE Cars;
-
 DROP TABLE Coupons;
-
-DROP TABLE Customers;
 
 DROP TABLE Permissions;
 
@@ -34,6 +26,10 @@ DROP TABLE Roles;
 DROP TABLE RolesPermissions;
 
 DROP TABLE Users;
+
+DROP TABLE Customers;
+
+DROP TABLE Cars;
 
 DROP TABLE Locations;
 

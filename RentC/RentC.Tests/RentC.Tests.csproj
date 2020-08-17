@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{55E1E9B2-52E1-4D52-9F7A-FF33265C5391}</ProjectGuid>
+    <ProjectGuid>{E524717D-D5FB-4075-A0A0-7B16FCFF08B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RentC.WebUI.Tests</RootNamespace>
-    <AssemblyName>RentC.WebUI.Tests</AssemblyName>
+    <RootNamespace>RentC.Tests</RootNamespace>
+    <AssemblyName>RentC.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RentC.WebUI\RentC.WebUI.csproj">
-      <Project>{0BDEF928-3ECA-4131-A66B-E91612581641}</Project>
+      <Project>{814CE764-2D8B-40CD-9D1B-2E8D92240D1D}</Project>
       <Name>RentC.WebUI</Name>
     </ProjectReference>
   </ItemGroup>
