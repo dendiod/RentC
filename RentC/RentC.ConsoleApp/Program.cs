@@ -10,7 +10,7 @@ using RentC.DataAccess;
 namespace RentC.ConsoleApp
 {
     class Program
-    {        
+    {
         private static void WelcommmingScreen()
         {
             StringBuilder sb = new StringBuilder();
@@ -42,6 +42,7 @@ namespace RentC.ConsoleApp
         }
         private static void Menu()
         {
+            GetAndPrint getAndPrint = new GetAndPrint();
             Console.Clear();
             StringBuilder sb = new StringBuilder();
             sb.Append("\n\n\n1 Register new Car Rent\n");
@@ -55,21 +56,24 @@ namespace RentC.ConsoleApp
             Console.WriteLine(sb);
 
             string input = Console.ReadLine().Trim();
-            Func<QueryReservation, int> func = x => x.Id;
             switch (input)
             {
-                case "3":
-                    GetReservations(true, func);
-                    ContinueOrQuit(Menu, () => { });
-                    break;
+                //case "3":
+                //    GetReservations(true, func);
+                //    ContinueOrQuit(Menu, () => { });
+                //    break;
                 case "4":
-                    GetAvailableCars();
+                    getAndPrint.GetAvailableCars(true, "Id");
                     ContinueOrQuit(Menu, () => { });
                     break;
-                case "5":
-                    NewCustomer();
-                    Menu();
-                    break;
+                //case "5":
+                //    NewCustomer();
+                //    Menu();
+                //    break;
+                //case "7":
+                //    GetAndPrint<int>.GetCustomers(true, x => x.Id);
+                //    ContinueOrQuit(Menu, () => { });
+                //    break;
                 case "8":
                     break;
                 default:
@@ -77,61 +81,7 @@ namespace RentC.ConsoleApp
                     ContinueOrQuit(Menu, () => { });
                     break;
             }
-        }
-
-        private static void GetReservations(bool asc, Func<QueryReservation, int>func)
-        {
-            var queryReservations = Data.GetReservations(true, func);
-            Console.WriteLine(queryReservations[0].StartDate);
-        }
-
-        private static void NewCustomer()
-        {
-            Console.Write("Client ID: ");
-            int id;
-            bool idIsInt = int.TryParse(Console.ReadLine().Trim(), out id);
-            if (!idIsInt)
-            {
-                Console.WriteLine("Id must be integer");
-                ContinueOrQuit(NewCustomer, Menu);
-            }
-            if (Data.IsCustomerExists(id) != null)
-            {
-                Console.WriteLine("Customer with this id already exists");
-                ContinueOrQuit(NewCustomer, Menu);
-            }
-            Console.Write("Client Name: ");
-            string name = Console.ReadLine();
-            Console.Write("Birth Date: ");
-
-        }
-
-        private static void GetAvailableCars()
-        {
-            localhost.AvailableCarsService webService = new localhost.AvailableCarsService();
-            localhost.QueryCar[] cars = webService.GetAvailableCars(true);
-
-            StringBuilder sb = new StringBuilder();
-            foreach (localhost.QueryCar c in cars)
-            {
-                sb.Append("------------------------------------------------\n");
-                sb.Append("Car plate: " + c.Plate + "\n");
-                sb.Append("Car manufacturer: " + c.Manufacturer + "\n");
-                sb.Append("Car model: " + c.Model + "\n");
-                sb.Append("Start Date: " + c.StartDate + "\n");
-                sb.Append("End Date: " + c.EndDate + "\n");
-                sb.Append("City: " + c.Location + "\n");
-            }
-            sb.Append("Sort by\n");
-            sb.Append("1-Car plate\n");
-            sb.Append("2-Car manufacturer\n");
-            sb.Append("3-Start Date\n");
-            sb.Append("4-End Date\n");
-            sb.Append("5-City\n");
-            sb.Append("6-Quit\n");
-            Console.WriteLine(sb);
-            int input = int.Parse(Console.ReadLine().Trim());
-        }
+        }        
         static void Main(string[] args)
         {
             WelcommmingScreen();

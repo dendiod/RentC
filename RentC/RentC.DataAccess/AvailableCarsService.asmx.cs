@@ -20,9 +20,9 @@ namespace RentC.DataAccess
     {
 
         [WebMethod]
-        public List<QueryCar> GetAvailableCars(bool asc, Expression<Func<QueryCar, int>> func)
+        public List<QueryCar> GetAvailableCars(bool asc, string orderBy)
         {
-            return Data.GetAvailableCars(asc, func);
+            return Data<int>.GetAvailableCars(asc, orderBy);
         }
     }
 }

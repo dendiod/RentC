@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
 using RentC.Core.Models.QueryModels;
 using RentC.Core.Models;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Linq.Dynamic.Core;
 
 namespace RentC.DataAccess
 {
-    public class Data
+    public class Data<T>
     {
-        public static List<QueryCar> GetAvailableCars(bool asc, Expression<Func<QueryCar, int>> func)
+        public static List<QueryCar> GetAvailableCars(bool asc, string orderBy)
         {
             using (ModelContext db = new ModelContext())
             {
@@ -25,7 +28,6 @@ namespace RentC.DataAccess
                            let earlierThanStart = reservation.StartDate > today
                            let laterThanEnd = reservation.EndDate < today
                            where reservation == null || earlierThanStart || laterThanEnd
-                           orderby asc ? car.Id : car.Id descending
 
                            select new QueryCar
                            {
@@ -37,39 +39,45 @@ namespace RentC.DataAccess
                                EndDate = earlierThanStart ? reservation.StartDate : new DateTime(2100, 1, 1),
                                Location = location.Name
                            };
-                return cars.OrderBy(func).ToList();
+
+                if (!asc)
+                {
+                    orderBy += " desc";
+                }
+                cars = cars.OrderBy(orderBy);
+
+                return cars.ToList();
             }
         }        
 
-        public static List<QueryReservation> GetReservations(bool asc, Func<QueryReservation, int>func)
+        public static IQueryable<QueryReservation> GetReservations(bool asc, Func<QueryReservation, T>func)
         {
             using (ModelContext db = new ModelContext())
             {
-                var reservations = from reservation in db.Reservations
-                                   join location in db.Locations on reservation.LocationId equals location.Id
-                                   join car in db.Cars on reservation.CarId equals car.Id
-                                   orderby asc ? reservation.Id : reservation.Id descending
+                return from reservation in db.Reservations
+                       join location in db.Locations on reservation.LocationId equals location.Id
+                       join car in db.Cars on reservation.CarId equals car.Id
+                       orderby asc ? func : func descending
 
-                                   select new QueryReservation
-                                   {
-                                       Id = reservation.Id,
-                                       Plate = car.Plate,
-                                       CustomerId = reservation.CustomerId,
-                                       StartDate = reservation.StartDate,
-                                       EndDate = reservation.EndDate,
-                                       Location = location.Name
-                                   };
-                return reservations.OrderBy(func).ToList();
+                       select new QueryReservation
+                       {
+                           Id = reservation.Id,
+                           Plate = car.Plate,
+                           CustomerId = reservation.CustomerId,
+                           StartDate = reservation.StartDate,
+                           EndDate = reservation.EndDate,
+                           Location = location.Name
+                       };
             }
         }
 
-        public static IQueryable<QueryCustomer> GetCustomers(bool asc)
+        public static IQueryable<QueryCustomer> GetCustomers(bool asc, Func<QueryCustomer, T> orderByFunc)
         {
             using (ModelContext db = new ModelContext())
             {
                 return from customer in db.Customers
                        join location in db.Locations on customer.LocationId equals location.Id
-                       orderby asc ? customer.Id : customer.Id descending
+                       orderby asc ? orderByFunc : orderByFunc descending
 
                        select new QueryCustomer
                        {

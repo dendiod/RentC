@@ -27,6 +27,7 @@ namespace RentC.ConsoleApp.localhost {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="AvailableCarsServiceSoap", Namespace="http://tempuri.org/")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseEntity))]
     public partial class AvailableCarsService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback GetAvailableCarsOperationCompleted;
@@ -74,24 +75,26 @@ namespace RentC.ConsoleApp.localhost {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAvailableCars", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public QueryCar[] GetAvailableCars(bool asc) {
+        public QueryCar[] GetAvailableCars(bool asc, string orderBy) {
             object[] results = this.Invoke("GetAvailableCars", new object[] {
-                        asc});
+                        asc,
+                        orderBy});
             return ((QueryCar[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetAvailableCarsAsync(bool asc) {
-            this.GetAvailableCarsAsync(asc, null);
+        public void GetAvailableCarsAsync(bool asc, string orderBy) {
+            this.GetAvailableCarsAsync(asc, orderBy, null);
         }
         
         /// <remarks/>
-        public void GetAvailableCarsAsync(bool asc, object userState) {
+        public void GetAvailableCarsAsync(bool asc, string orderBy, object userState) {
             if ((this.GetAvailableCarsOperationCompleted == null)) {
                 this.GetAvailableCarsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableCarsOperationCompleted);
             }
             this.InvokeAsync("GetAvailableCars", new object[] {
-                        asc}, this.GetAvailableCarsOperationCompleted, userState);
+                        asc,
+                        orderBy}, this.GetAvailableCarsOperationCompleted, userState);
         }
         
         private void OnGetAvailableCarsOperationCompleted(object arg) {
@@ -126,7 +129,7 @@ namespace RentC.ConsoleApp.localhost {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class QueryCar {
+    public partial class QueryCar : BaseEntity {
         
         private string plateField;
         
@@ -168,17 +171,7 @@ namespace RentC.ConsoleApp.localhost {
             set {
                 this.modelField = value;
             }
-        }
-        
-        /// <remarks/>
-        public string Location {
-            get {
-                return this.locationField;
-            }
-            set {
-                this.locationField = value;
-            }
-        }
+        }     
         
         /// <remarks/>
         public System.DateTime StartDate {
@@ -197,6 +190,41 @@ namespace RentC.ConsoleApp.localhost {
             }
             set {
                 this.endDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string Location
+        {
+            get
+            {
+                return this.locationField;
+            }
+            set
+            {
+                this.locationField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(QueryCar))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public abstract partial class BaseEntity {
+        
+        private int idField;
+        
+        /// <remarks/>
+        public int Id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
             }
         }
     }
