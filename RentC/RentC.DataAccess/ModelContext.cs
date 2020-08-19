@@ -4,7 +4,7 @@ namespace RentC.DataAccess
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using RentC.Core.Models;
+    using RentC.DataAccess.Models;
 
     public partial class ModelContext : DbContext
     {

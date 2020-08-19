@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentC.Core.Models.QueryModels
+namespace RentC.DataAccess.Models.QueryModels
 {
     public class QueryReservation : BaseEntity
     {

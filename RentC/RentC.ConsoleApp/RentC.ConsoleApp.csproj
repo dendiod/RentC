@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetAndPrint.cs" />
+    <Compile Include="InAppBehavior.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -86,10 +87,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RentC.Core\RentC.Core.csproj">
-      <Project>{722a0584-b84c-40b0-b713-1c8e9728deff}</Project>
-      <Name>RentC.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RentC.DataAccess\RentC.DataAccess.csproj">
       <Project>{18f3d4ef-a5e1-4365-955b-706a0f57458c}</Project>
       <Name>RentC.DataAccess</Name>

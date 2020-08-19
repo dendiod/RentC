@@ -1616,7 +1616,7 @@ if (typeof jQuery === 'undefined') {
 
       this.setContent()
       $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
+      this.$element.attr('aria-describecontexty', tipId)
 
       if (this.options.animation) $tip.addClass('fade')
 
@@ -1758,7 +1758,7 @@ if (typeof jQuery === 'undefined') {
       if (that.hoverState != 'in') $tip.detach()
       if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
         that.$element
-          .removeAttr('aria-describedby')
+          .removeAttr('aria-describecontexty')
           .trigger('hidden.bs.' + that.type)
       }
       callback && callback()

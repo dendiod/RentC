@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentC.Core.Models
+namespace RentC.DataAccess.Models
 {
-    public class Customer : BaseEntity
+    public class Manufacturer : BaseEntity
     {
         public string Name { get; set; }
-        public DateTime BirthDate { get; set; }
-        public int LocationId { get; set; }
     }
 }

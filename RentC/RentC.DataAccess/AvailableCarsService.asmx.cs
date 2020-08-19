@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Services;
-using RentC.Core.Models.QueryModels;
+using RentC.DataAccess.Models.QueryModels;
 
 namespace RentC.DataAccess
 {
@@ -20,9 +20,10 @@ namespace RentC.DataAccess
     {
 
         [WebMethod]
-        public List<QueryCar> GetAvailableCars(bool asc, string orderBy)
+        public QueryCar[] GetAvailableCars(bool asc, string orderBy)
         {
-            return Data<int>.GetAvailableCars(asc, orderBy);
+            SQLRepo<QueryCar> data = new SQLRepo<QueryCar>(new ModelContext());
+            return data.GetAvailableCars(asc, orderBy);
         }
     }
 }

@@ -81,11 +81,23 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\CustomerExistsAttribute.cs" />
     <Compile Include="AvailableCarsService.asmx.cs">
       <DependentUpon>AvailableCarsService.asmx</DependentUpon>
     </Compile>
-    <Compile Include="Data.cs" />
+    <Compile Include="Contracts\IRepo.cs" />
+    <Compile Include="SQLRepo.cs" />
     <Compile Include="ModelContext.cs" />
+    <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Manufacturer.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\QueryModels\QueryCar.cs" />
+    <Compile Include="Models\QueryModels\QueryCustomer.cs" />
+    <Compile Include="Models\QueryModels\QueryReservation.cs" />
+    <Compile Include="Models\Reservation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -96,12 +108,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RentC.Core\RentC.Core.csproj">
-      <Project>{722a0584-b84c-40b0-b713-1c8e9728deff}</Project>
-      <Name>RentC.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

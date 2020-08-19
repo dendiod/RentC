@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentC.Core.Models
+namespace RentC.DataAccess.Models
 {
-    public class Manufacturer : BaseEntity
+    public abstract class BaseEntity
     {
-        public string Name { get; set; }
+        public virtual int Id { get; set; }
     }
 }

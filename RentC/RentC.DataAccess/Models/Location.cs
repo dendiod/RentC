@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentC.Core.Models
+namespace RentC.DataAccess.Models
 {
-    public class Model : BaseEntity
+    public class Location : BaseEntity
     {
         public string Name { get; set; }
     }
