@@ -13,7 +13,7 @@ namespace RentC.DataAccess.Contracts
         void Commit();
         void Delete(int Id);
         T Find(int Id);
-        IEnumerable<T> Find(Func<T, bool> predicate);
+        T FirstOrDefault(Func<T, bool> predicate);
         void Insert(T t);
         void Update(T t);
     }

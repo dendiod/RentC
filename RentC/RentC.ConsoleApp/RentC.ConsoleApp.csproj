@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="GetAndPrint.cs" />
     <Compile Include="InAppBehavior.cs" />
+    <Compile Include="InsertUpdate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

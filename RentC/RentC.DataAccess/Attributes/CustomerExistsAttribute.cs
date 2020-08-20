@@ -12,14 +12,19 @@ namespace RentC.Core
 {
     class CustomerExistsAttribute : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        private ModelContext modelContext;
+        public CustomerExistsAttribute(ModelContext modelContext)
         {
+            this.modelContext = modelContext;
+        }
+        public override bool IsValid(object value)
+        {            
             if (value == null)
             {
                 return false;
             }
 
-            IRepo<Customer> repo = new SQLRepo<Customer>(new ModelContext());
+            IRepo<Customer> repo = new SQLRepo<Customer>(modelContext);
             int id;
             bool idIsInt = int.TryParse(value.ToString(), out id);
 
@@ -28,12 +33,13 @@ namespace RentC.Core
                 return false;
             }
 
-            if (repo.Find(id) == null)
+            if (repo.Find(id) != null)
             {
-                return true;
-            }
+                this.ErrorMessage = "Customer with this Id already exists";
+                return false;
+            }            
 
-            return false;
+            return true;
         }
     }
 }

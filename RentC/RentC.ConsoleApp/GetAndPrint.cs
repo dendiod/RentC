@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using RentC.DataAccess.Models.QueryModels;
@@ -13,17 +11,17 @@ namespace RentC.ConsoleApp
 {
     public class GetAndPrint
     {
-        internal void GetAvailableCars(bool asc = true, string orderBy = "Id", int propIndex = 0)
+        internal void GetAvailableCars(ModelContext modelContext bool asc = true, string orderBy = "Id", int propIndex = 0)
         {
             localhost.AvailableCarsService webService = new localhost.AvailableCarsService();
-            localhost.QueryCar[] cars = webService.GetAvailableCars(asc, orderBy);
+            localhost.QueryCar[] cars = webService.GetAvailableCars(asc, orderBy, modelContext);
 
             PropertyInfo[] properties = GetProps<localhost.QueryCar>();
             string[] labels = { "Car Plate", "Car Manufacturer", "Car Model", "Start Date", "EndDate", "City" };
 
             PrintList(labels, properties, cars);
 
-            Action<bool, string, int> action = GetAvailableCars;
+            Action<ModelContext, bool, string, int> action = GetAvailableCars;
             OrderByOrQuit(propIndex, asc, properties, action);
         }
         internal void GetCustomers(bool asc = true, string orderBy = "Id", int propIndex = 1)
@@ -52,32 +50,7 @@ namespace RentC.ConsoleApp
 
             Action<bool, string, int> action = GetReservations;
             OrderByOrQuit(propIndex, asc, properties, action);
-        }
-
-        internal void NewCustomer()
-        {
-            Console.Write("Client ID: ");
-            int id = int.Parse(Console.ReadLine().Trim());
-            Console.Write("Client Name: ");
-            string name = Console.ReadLine();
-            Console.Write("Birth Date: ");
-            DateTime birhDate = Convert.ToDateTime(Console.ReadLine().Trim());
-            Console.Write("Location: ");
-            string location = Console.ReadLine();
-
-            QueryCustomer user = new QueryCustomer { Id = id, Name = name, BirthDate = birhDate, Location = location };
-
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(user);
-            if (!Validator.TryValidateObject(user, context, results, true))
-            {
-                foreach (var error in results)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
-
-        }
+        }        
 
         private PropertyInfo[] GetProps<T>()
         {

@@ -40,7 +40,7 @@ CREATE TABLE Coupons (
 
 -- Table: Customers
 CREATE TABLE Customers (
-    Id int  IDENTITY PRIMARY KEY,
+    Id int PRIMARY KEY,
     Name varchar(50)  NOT NULL,
     BirthDate date  NOT NULL,
     LocationId INT REFERENCES Locations(Id) ON DELETE CASCADE

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\CustomerExistsAttribute.cs" />
+    <Compile Include="Attributes\DateIsValidAttribute.cs" />
     <Compile Include="AvailableCarsService.asmx.cs">
       <DependentUpon>AvailableCarsService.asmx</DependentUpon>
     </Compile>

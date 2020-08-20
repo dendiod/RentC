@@ -44,9 +44,9 @@ namespace RentC.DataAccess
             return dbSet.Find(Id);
         }
 
-        public IEnumerable<T> Find(Func<T, bool> predicate)
+        public T FirstOrDefault(Func<T, bool> predicate)
         {
-            return dbSet.Where(predicate);
+            return dbSet.FirstOrDefault(predicate);
         }
 
         public void Insert(T t)

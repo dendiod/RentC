@@ -10,6 +10,6 @@ namespace RentC.DataAccess.Models
     {
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RentC.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace RentC.ConsoleApp
 {
-    internal class InAppBehavior
+    public class InAppBehavior
     {
+        private ModelContext modelContext;
+        private InsertUpdate insertUpdate;
+
+        public InAppBehavior()
+        {
+            modelContext = new ModelContext();
+            insertUpdate = new InsertUpdate(modelContext, this);
+        }
         internal void WelcommmingScreen()
         {
             StringBuilder sb = new StringBuilder();
@@ -19,7 +28,7 @@ namespace RentC.ConsoleApp
             ContinueOrQuit(Menu, () => { });
         }
 
-        private void ContinueOrQuit(Action continueAction, Action quitAction)
+        internal void ContinueOrQuit(Action continueAction, Action quitAction)
         {
             Console.WriteLine("Press ENTER to continue or ESC to quit");
             while (true)
@@ -37,9 +46,11 @@ namespace RentC.ConsoleApp
                 }
             }
         }
-        private void Menu()
+        internal void Menu()
         {
             GetAndPrint getAndPrint = new GetAndPrint();
+            
+
             Console.Clear();
             StringBuilder sb = new StringBuilder();
             sb.Append("\n\n\n1 Register new Car Rent\n");
@@ -64,8 +75,8 @@ namespace RentC.ConsoleApp
                     ContinueOrQuit(Menu, () => { });
                     break;
                 case "5":
-                    getAndPrint.NewCustomer();
-                    ContinueOrQuit(Menu, () => { });
+                    insertUpdate.NewCustomer();
+                    Menu();
                     break;
                 case "7":
                     getAndPrint.GetCustomers();
