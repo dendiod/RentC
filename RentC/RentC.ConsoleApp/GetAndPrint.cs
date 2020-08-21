@@ -11,23 +11,30 @@ namespace RentC.ConsoleApp
 {
     public class GetAndPrint
     {
-        internal void GetAvailableCars(ModelContext modelContext bool asc = true, string orderBy = "Id", int propIndex = 0)
+        private ModelContext modelContext;
+        private QueryManager queryManager;
+
+        public GetAndPrint(ModelContext modelContext)
+        {
+            this.modelContext = modelContext;
+            queryManager = new QueryManager(modelContext);
+        }
+        internal void GetAvailableCars(bool asc = true, string orderBy = "Id", int propIndex = 0)
         {
             localhost.AvailableCarsService webService = new localhost.AvailableCarsService();
-            localhost.QueryCar[] cars = webService.GetAvailableCars(asc, orderBy, modelContext);
+            localhost.QueryCar[] cars = webService.GetAvailableCars(asc, orderBy);
 
             PropertyInfo[] properties = GetProps<localhost.QueryCar>();
             string[] labels = { "Car Plate", "Car Manufacturer", "Car Model", "Start Date", "EndDate", "City" };
 
             PrintList(labels, properties, cars);
 
-            Action<ModelContext, bool, string, int> action = GetAvailableCars;
+            Action<bool, string, int> action = GetAvailableCars;
             OrderByOrQuit(propIndex, asc, properties, action);
         }
-        internal void GetCustomers(bool asc = true, string orderBy = "Id", int propIndex = 1)
+        internal void GetCustomers(bool asc = true, string orderBy = "CustomId", int propIndex = 1)
         {
-            SQLRepo<QueryCustomer> data = new SQLRepo<QueryCustomer>(new ModelContext());
-            var customers = data.GetCustomers(asc, orderBy);
+            var customers = queryManager.GetCustomers(asc, orderBy);
 
             PropertyInfo[] properties = GetProps<QueryCustomer>();
             string[] labels = { "Client Id", "Client Name", "Birth Date", "Location"};
@@ -40,8 +47,7 @@ namespace RentC.ConsoleApp
 
         internal void GetReservations(bool asc = true, string orderBy = "Id", int propIndex = 0)
         {
-            SQLRepo<QueryReservation> data = new SQLRepo<QueryReservation>(new ModelContext());
-            var reservations = data.GetReservations(asc, orderBy);
+            var reservations = queryManager.GetReservations(asc, orderBy);
 
             PropertyInfo[] properties = GetProps<QueryReservation>();
             string[] labels = {"Car plate", "Client Id", "Start Date", "End Date", "Location" };

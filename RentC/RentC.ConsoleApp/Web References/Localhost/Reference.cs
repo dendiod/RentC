@@ -137,11 +137,11 @@ namespace RentC.ConsoleApp.localhost {
         
         private string modelField;
         
-        private string locationField;
-        
         private System.DateTime startDateField;
         
         private System.DateTime endDateField;
+        
+        private string locationField;
         
         /// <remarks/>
         public string Plate {
@@ -171,7 +171,7 @@ namespace RentC.ConsoleApp.localhost {
             set {
                 this.modelField = value;
             }
-        }     
+        }
         
         /// <remarks/>
         public System.DateTime StartDate {
@@ -192,16 +192,13 @@ namespace RentC.ConsoleApp.localhost {
                 this.endDateField = value;
             }
         }
-
+        
         /// <remarks/>
-        public string Location
-        {
-            get
-            {
+        public string Location {
+            get {
                 return this.locationField;
             }
-            set
-            {
+            set {
                 this.locationField = value;
             }
         }

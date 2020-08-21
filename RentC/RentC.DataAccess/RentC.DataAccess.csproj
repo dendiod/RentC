@@ -87,6 +87,7 @@
       <DependentUpon>AvailableCarsService.asmx</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IRepo.cs" />
+    <Compile Include="QueryManager.cs" />
     <Compile Include="SQLRepo.cs" />
     <Compile Include="ModelContext.cs" />
     <Compile Include="Models\BaseEntity.cs" />

@@ -20,10 +20,10 @@ namespace RentC.DataAccess
     {
 
         [WebMethod]
-        public QueryCar[] GetAvailableCars(bool asc, string orderBy, ModelContext context)
+        public QueryCar[] GetAvailableCars(bool asc, string orderBy)
         {
-            SQLRepo<QueryCar> data = new SQLRepo<QueryCar>(context);
-            return data.GetAvailableCars(asc, orderBy);
+            QueryManager queryManager = new QueryManager(new ModelContext());
+            return queryManager.GetAvailableCars(asc, orderBy);
         }
     }
 }

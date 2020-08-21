@@ -8,6 +8,7 @@ namespace RentC.DataAccess.Models
 {
     public class Customer : BaseEntity
     {
+        public int CustomId { get; set; }
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public int? LocationId { get; set; }

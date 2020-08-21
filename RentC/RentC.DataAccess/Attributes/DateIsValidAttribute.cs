@@ -16,7 +16,12 @@ namespace RentC.DataAccess.Attributes
                 return false;
             }
 
-            DateTime birthDate = (DateTime)value;            
+            DateTime birthDate = (DateTime)value;  
+            if(birthDate == DateTime.MinValue)
+            {
+                this.ErrorMessage = "Invalid date. Valid format is dd-MM-yyyy";
+                return false;
+            }
 
             // Save today's date.
             var today = DateTime.Today;
@@ -25,11 +30,6 @@ namespace RentC.DataAccess.Attributes
             var age = today.Year - birthDate.Year;
 
             const int minAge = 18, maxAge = 125;
-            if (age < minAge || age > maxAge)
-            {
-                this.ErrorMessage = String.Format("Year should be between {0} and {1}", today.Year - maxAge, today.Year - minAge);
-                return false;
-            }
 
             // Go back to the year the person was born in case of a leap year
             if (birthDate.Date > today.AddYears(-age))
@@ -38,7 +38,7 @@ namespace RentC.DataAccess.Attributes
             }
             if(age < minAge || age > maxAge)
             {
-                this.ErrorMessage = "Client's age should be between 18 and 125";
+                this.ErrorMessage = String.Format("Client's age should be between {0} and {1}", minAge, maxAge);
                 return false;
             }
 

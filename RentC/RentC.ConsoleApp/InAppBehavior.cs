@@ -11,18 +11,20 @@ namespace RentC.ConsoleApp
     {
         private ModelContext modelContext;
         private InsertUpdate insertUpdate;
+        private GetAndPrint getAndPrint;
 
         public InAppBehavior()
         {
             modelContext = new ModelContext();
             insertUpdate = new InsertUpdate(modelContext, this);
+            getAndPrint = new GetAndPrint(modelContext);
         }
         internal void WelcommmingScreen()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("Welcome to RentC, your brand new solution to\n");
             sb.Append("manage and control your company's data\n");
-            sb.Append("without missing anything\n\n\n\n\n");
+            sb.Append("without missing anything\n\n\n\n");
             Console.WriteLine(sb);
 
             ContinueOrQuit(Menu, () => { });
@@ -30,7 +32,7 @@ namespace RentC.ConsoleApp
 
         internal void ContinueOrQuit(Action continueAction, Action quitAction)
         {
-            Console.WriteLine("Press ENTER to continue or ESC to quit");
+            Console.WriteLine("\nPress ENTER to continue or ESC to quit");
             while (true)
             {
                 ConsoleKey consoleKey = Console.ReadKey().Key;
@@ -48,9 +50,6 @@ namespace RentC.ConsoleApp
         }
         internal void Menu()
         {
-            GetAndPrint getAndPrint = new GetAndPrint();
-            
-
             Console.Clear();
             StringBuilder sb = new StringBuilder();
             sb.Append("\n\n\n1 Register new Car Rent\n");
@@ -66,6 +65,10 @@ namespace RentC.ConsoleApp
             string input = Console.ReadLine().Trim();
             switch (input)
             {
+                case "1":
+                    insertUpdate.NewReservation();
+                    Menu();
+                    break;
                 case "3":
                     getAndPrint.GetReservations();
                     ContinueOrQuit(Menu, () => { });

@@ -13,11 +13,10 @@ namespace RentC.DataAccess.Models.QueryModels
     public class QueryCustomer : BaseEntity
     {
         [Required]
-        [Range(1, int.MaxValue)]
         [CustomerExists]
-        public override int Id { get; set; }
+        public int CustomId { get; set; }
         [Required]
-        [StringLength(50, ErrorMessage ="Name is too long")]
+        [StringLength(50)]
         public string Name  { get; set; }
         [Required]
         [DateIsValid]
