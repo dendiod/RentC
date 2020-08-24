@@ -81,11 +81,16 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\CustomerExistsAttribute.cs" />
+    <Compile Include="Attributes\AgeAttribute.cs" />
+    <Compile Include="Attributes\CustomerExistingAttribute.cs" />
+    <Compile Include="Attributes\TodayAttribute.cs" />
+    <Compile Include="Attributes\IdIsValidAttribute.cs" />
     <Compile Include="Attributes\DateIsValidAttribute.cs" />
+    <Compile Include="Attributes\StartEndDatesAttribute.cs" />
     <Compile Include="AvailableCarsService.asmx.cs">
       <DependentUpon>AvailableCarsService.asmx</DependentUpon>
     </Compile>
+    <Compile Include="ContextManager.cs" />
     <Compile Include="Contracts\IRepo.cs" />
     <Compile Include="QueryManager.cs" />
     <Compile Include="SQLRepo.cs" />

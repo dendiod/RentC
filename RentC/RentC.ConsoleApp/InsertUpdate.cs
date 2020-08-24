@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,10 +17,12 @@ namespace RentC.ConsoleApp
     {
         private ModelContext modelContext;
         private InAppBehavior inAppBehavior;
+        private ContextManager contextManager;
         public InsertUpdate(ModelContext modelContext, InAppBehavior inAppBehavior)
         {
             this.modelContext = modelContext;
             this.inAppBehavior = inAppBehavior;
+            this.contextManager = new ContextManager(modelContext);
         }
 
         private int ReadInt(string message)
@@ -39,61 +42,54 @@ namespace RentC.ConsoleApp
         private DateTime ReadDate(string message)
         {
             DateTime date;
-            Console.Write("Birth Date: ");
+            Console.Write(message);
             DateTime.TryParseExact(Console.ReadLine().Trim(),
                 "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
             return date;
         } 
 
-        internal void NewCustomer()
+        private void PushModel<T>(T model, bool creating, Action<bool, T> nextAction, Action<bool>curAction)
         {
-            Console.Clear();
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(model);
+            if (!Validator.TryValidateObject(model, context, results, true))
+            {
+                Console.WriteLine();
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                inAppBehavior.ContinueOrQuit(curAction, inAppBehavior.Menu, creating);
+                return;
+            }
+            
+            nextAction(creating, model);
+            inAppBehavior.Menu();
+        }
+
+        internal void ManageCustomers(bool isCreating)
+        {
+            inAppBehavior.MenuItemEntry("Register new Customer", "Update Customer", isCreating);
+
             int id = ReadInt("Client ID: ");
             string name = ReadString("Client Name: ");
             DateTime birthDate = ReadDate("Birth Date: ");
             string location = ReadString("Location: ");
 
-            QueryCustomer queryCustomer = new QueryCustomer { CustomId = id, Name = name, BirthDate = birthDate, Location = location};
+            QueryCustomer queryCustomer = new QueryCustomer { CustomId = id, Name = name, BirthDate = birthDate, Location = location, IsCreating = isCreating};
 
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(queryCustomer);
-            if (!Validator.TryValidateObject(queryCustomer, context, results, true))
-            {
-                foreach (var error in results)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-                inAppBehavior.ContinueOrQuit(NewCustomer, inAppBehavior.Menu);
-            }
-            else
-            {
-                IRepo<Location> locationRepo = new SQLRepo<Location>(modelContext);
-
-                Customer customer = new Customer { CustomId = id, Name = name, BirthDate = birthDate};
-                if(location != "")
-                {
-                    Location loc = locationRepo.FirstOrDefault(x => x.Name == location);
-                    if(loc != null)
-                    {
-                        customer.LocationId = loc.Id;
-                    }
-                    else
-                    {
-                        int locatId = locationRepo.Collection().Count() + 1;
-                        locationRepo.Insert(new Location {Id = locatId, Name = location });
-                        locationRepo.Commit();
-                        customer.LocationId = locatId;
-                    }
-                }
-
-                IRepo<Customer> customerRepo = new SQLRepo<Customer>(modelContext);
-                customerRepo.Insert(customer);
-                customerRepo.Commit();
-            }
+            PushModel(queryCustomer, isCreating, contextManager.ManageCustomers, ManageCustomers);
         }
 
-        internal void NewReservation()
+        internal void ManageReservations(bool isCreating)
         {
+            inAppBehavior.MenuItemEntry("Register new Car Rent", "Update Car Rent", isCreating);
+
+            int id = 1;
+            if (!isCreating)
+            {
+                id = ReadInt("Reservation ID: ");
+            }
             string plate = ReadString("Car Plate: ");
             int customerId = ReadInt("Client ID: ");
             DateTime startDate = ReadDate("Start Date: ");
@@ -102,44 +98,16 @@ namespace RentC.ConsoleApp
 
             QueryReservation queryReservation = new QueryReservation
             {
+                Id = id,
                 Plate = plate,
                 CustomerId = customerId,
                 StartDate = startDate,
                 EndDate = endDate,
-                Location = location
+                Location = location,
+                IsCreating = isCreating
             };
 
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(queryReservation);
-            if (!Validator.TryValidateObject(queryReservation, context, results, true))
-            {
-                foreach (var error in results)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-                inAppBehavior.ContinueOrQuit(NewReservation, inAppBehavior.Menu);
-            }
-            else
-            {
-                IRepo<Car> carRepo = new SQLRepo<Car>(modelContext);
-                int carId = carRepo.FirstOrDefault(x => x.Plate == plate).Id;
-
-                IRepo<Location> locationRepo = new SQLRepo<Location>(modelContext);
-                int locationId = locationRepo.FirstOrDefault(x => x.Name == location).Id;
-
-                Reservation reservation = new Reservation
-                {
-                    CarId = carId,
-                    CustomerId = customerId,
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    LocationId = locationId                    
-                };
-
-                IRepo<Reservation> reservationRepo = new SQLRepo<Reservation>(modelContext);
-                reservationRepo.Insert(reservation);
-                reservationRepo.Commit();
-            }
-        }
+            PushModel(queryReservation, isCreating, contextManager.ManageReservations, ManageReservations);
+        }        
     }
 }

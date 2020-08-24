@@ -31,18 +31,18 @@ namespace RentC.DataAccess
             context.SaveChanges();
         }
 
-        public void Delete(int Id)
+        public void Delete(int id)
         {
-            var t = Find(Id);
+            var t = Find(id);
             if (context.Entry(t).State == EntityState.Detached)
                 dbSet.Attach(t);
 
             dbSet.Remove(t);
         }
 
-        public T Find(int Id)
+        public T Find(int id)
         {
-            return dbSet.Find(Id);
+            return dbSet.Find(id);
         }
 
         public T FirstOrDefault(Func<T, bool> predicate)
@@ -59,6 +59,11 @@ namespace RentC.DataAccess
         {
             dbSet.Attach(t);
             context.Entry(t).State = EntityState.Modified;
-        }        
+        }   
+        
+        public ModelContext GetContext()
+        {
+            return context;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace RentC.ConsoleApp
         {
             modelContext = new ModelContext();
             insertUpdate = new InsertUpdate(modelContext, this);
-            getAndPrint = new GetAndPrint(modelContext);
+            getAndPrint = new GetAndPrint(modelContext, this);
         }
         internal void WelcommmingScreen()
         {
@@ -27,10 +27,10 @@ namespace RentC.ConsoleApp
             sb.Append("without missing anything\n\n\n\n");
             Console.WriteLine(sb);
 
-            ContinueOrQuit(Menu, () => { });
+            ContinueOrQuit(Menu, (_) => { });
         }
 
-        internal void ContinueOrQuit(Action continueAction, Action quitAction)
+        internal void ContinueOrQuit(Action<bool> continueAction, Action<bool> quitAction, bool creating = true)
         {
             Console.WriteLine("\nPress ENTER to continue or ESC to quit");
             while (true)
@@ -38,17 +38,17 @@ namespace RentC.ConsoleApp
                 ConsoleKey consoleKey = Console.ReadKey().Key;
                 if (consoleKey == ConsoleKey.Enter)
                 {
-                    continueAction.Invoke();
+                    continueAction(creating);
                     break;
                 }
                 if (consoleKey == ConsoleKey.Escape)
                 {
-                    quitAction.Invoke();
+                    quitAction(creating);
                     break;
                 }
             }
         }
-        internal void Menu()
+        internal void Menu(bool temp = true)
         {
             Console.Clear();
             StringBuilder sb = new StringBuilder();
@@ -66,32 +66,40 @@ namespace RentC.ConsoleApp
             switch (input)
             {
                 case "1":
-                    insertUpdate.NewReservation();
-                    Menu();
+                    insertUpdate.ManageReservations(true);
+                    break;
+                case "2":
+                    insertUpdate.ManageReservations(false);
                     break;
                 case "3":
                     getAndPrint.GetReservations();
-                    ContinueOrQuit(Menu, () => { });
                     break;
                 case "4":
                     getAndPrint.GetAvailableCars();
-                    ContinueOrQuit(Menu, () => { });
                     break;
                 case "5":
-                    insertUpdate.NewCustomer();
-                    Menu();
+                    insertUpdate.ManageCustomers(true);
+                    break;
+                case "6":
+                    insertUpdate.ManageCustomers(false);
                     break;
                 case "7":
                     getAndPrint.GetCustomers();
-                    ContinueOrQuit(Menu, () => { });
                     break;
                 case "8":
                     break;
                 default:
                     Console.WriteLine("You entered wrong value");
-                    ContinueOrQuit(Menu, () => { });
+                    ContinueOrQuit(Menu, (_) => { });
                     break;
             }
+        }
+
+        internal void MenuItemEntry(string name, string secondName = "", bool creating = true)
+        {
+            Console.Clear();
+            string screenLabel = creating ? name : secondName;
+            Console.WriteLine(screenLabel + "\n");
         }
     }
 }

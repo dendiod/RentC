@@ -1,5 +1,6 @@
 using RentC.DataAccess;
 using RentC.DataAccess.Contracts;
+using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
 using System;
 
@@ -45,7 +46,7 @@ namespace RentC.WebUI
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<IRepo<QueryCustomer>, SQLRepo<QueryCustomer>>();
+            container.RegisterType<IRepo<Customer>, SQLRepo<Customer>>();
         }
     }
 }

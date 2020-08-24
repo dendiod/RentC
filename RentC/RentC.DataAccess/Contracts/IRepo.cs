@@ -11,10 +11,11 @@ namespace RentC.DataAccess.Contracts
     {
         IQueryable<T> Collection();
         void Commit();
-        void Delete(int Id);
-        T Find(int Id);
+        void Delete(int id);
+        T Find(int id);
         T FirstOrDefault(Func<T, bool> predicate);
         void Insert(T t);
         void Update(T t);
+        ModelContext GetContext();
     }
 }

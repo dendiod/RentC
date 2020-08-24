@@ -1,19 +1,21 @@
-﻿using System;
+﻿using RentC.DataAccess.Models.QueryModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Web;
 
 namespace RentC.DataAccess.Attributes
 {
-    public class DateIsValidAttribute : ValidationAttribute
+    public class StartEndDatesAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
-            DateTime birthDate = (DateTime)value;  
-            if(birthDate == DateTime.MinValue)
+            QueryReservation r = value as QueryReservation;
+
+            if(r.EndDate < r.StartDate)
             {
+                this.ErrorMessage = "End Date should be equal or bigger than Start Date";
                 return false;
             }
 

@@ -12,11 +12,6 @@ namespace RentC.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        IRepo<QueryCustomer> repo;
-        public HomeController(IRepo<QueryCustomer> repo)
-        {
-            this.repo = repo;
-        }
         public ActionResult Index()
         {
             return View();

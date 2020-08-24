@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace RentC.DataAccess.Models
 {
     public abstract class BaseEntity
-    {
-        public virtual int Id { get; set; }
+    {        
+        public int Id { get; set; }
     }
 }
