@@ -12,6 +12,11 @@ namespace RentC.DataAccess.Attributes
     {
         public override bool IsValid(object value)
         {
+            if(value == null)
+            {
+                return false;
+            }
+
             IRepo<Customer> customerRepo = new SQLRepo<Customer>(new ModelContext());
             var customer = customerRepo.FirstOrDefault(x => x.CustomId == (int)value);
 

@@ -47,6 +47,7 @@ namespace RentC.WebUI
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IRepo<Customer>, SQLRepo<Customer>>();
+            container.RegisterType<IRepo<Reservation>, SQLRepo<Reservation>>();
         }
     }
 }

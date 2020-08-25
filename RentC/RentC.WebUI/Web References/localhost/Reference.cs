@@ -20,9 +20,8 @@ namespace RentC.WebUI.localhost {
     using System.Web.Services.Protocols;
     using System.Xml.Serialization;
     using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
-
+    
+    
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -76,26 +75,36 @@ namespace RentC.WebUI.localhost {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAvailableCars", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public QueryCar[] GetAvailableCars(bool asc, string orderBy) {
+        public QueryCar[] GetAvailableCars(string orderBy, string plate, string manufacturer, string model, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] System.Nullable<System.DateTime> startDate, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] System.Nullable<System.DateTime> endDate, string location) {
             object[] results = this.Invoke("GetAvailableCars", new object[] {
-                        asc,
-                        orderBy});
+                        orderBy,
+                        plate,
+                        manufacturer,
+                        model,
+                        startDate,
+                        endDate,
+                        location});
             return ((QueryCar[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetAvailableCarsAsync(bool asc, string orderBy) {
-            this.GetAvailableCarsAsync(asc, orderBy, null);
+        public void GetAvailableCarsAsync(string orderBy, string plate, string manufacturer, string model, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate, string location) {
+            this.GetAvailableCarsAsync(orderBy, plate, manufacturer, model, startDate, endDate, location, null);
         }
         
         /// <remarks/>
-        public void GetAvailableCarsAsync(bool asc, string orderBy, object userState) {
+        public void GetAvailableCarsAsync(string orderBy, string plate, string manufacturer, string model, System.Nullable<System.DateTime> startDate, System.Nullable<System.DateTime> endDate, string location, object userState) {
             if ((this.GetAvailableCarsOperationCompleted == null)) {
                 this.GetAvailableCarsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableCarsOperationCompleted);
             }
             this.InvokeAsync("GetAvailableCars", new object[] {
-                        asc,
-                        orderBy}, this.GetAvailableCarsOperationCompleted, userState);
+                        orderBy,
+                        plate,
+                        manufacturer,
+                        model,
+                        startDate,
+                        endDate,
+                        location}, this.GetAvailableCarsOperationCompleted, userState);
         }
         
         private void OnGetAvailableCarsOperationCompleted(object arg) {
@@ -173,9 +182,8 @@ namespace RentC.WebUI.localhost {
                 this.modelField = value;
             }
         }
-
+        
         /// <remarks/>
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public System.DateTime StartDate {
             get {
                 return this.startDateField;
@@ -184,9 +192,8 @@ namespace RentC.WebUI.localhost {
                 this.startDateField = value;
             }
         }
-
+        
         /// <remarks/>
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public System.DateTime EndDate {
             get {
                 return this.endDateField;

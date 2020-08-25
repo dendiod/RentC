@@ -150,6 +150,7 @@
     <Compile Include="Controllers\CarController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="CustomLogic\Overrider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -193,6 +194,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\Car\AvailableCars.cshtml" />
+    <Content Include="Views\Reservation\Create.cshtml" />
+    <Content Include="Views\Reservation\Update.cshtml" />
+    <Content Include="Views\Customer\CustomersList.cshtml" />
+    <Content Include="Views\Reservation\ReservationList.cshtml" />
     <None Include="Web References\localhost\AvailableCarsService.disco" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

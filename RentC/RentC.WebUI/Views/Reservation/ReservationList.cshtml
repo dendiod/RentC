@@ -1,10 +1,10 @@
-﻿@model IEnumerable<RentC.WebUI.localhost.QueryCar>
+﻿@model IEnumerable<RentC.DataAccess.Models.QueryModels.QueryReservation>
 
 @{
-    ViewBag.Title = "AvailableCars";
+    ViewBag.Title = "ReservationList";
 }
 
-<h2>AvailableCars</h2>
+<h2>ReservationList</h2>
 
 @using (Html.BeginForm())
 {
@@ -21,11 +21,7 @@
         </th>
         <th>
             <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Manufacturer")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Model")
+            @Html.RadioButton("orderBy", "CustomerId")
         </th>
         <th>
             <label class="control-label">Sort asc</label>
@@ -43,27 +39,23 @@
     <tr>
         <th>
             <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Plate desc")
+            @Html.RadioButton("orderBy", "Plate")
         </th>
         <th>
             <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Manufacturer desc")
+            @Html.RadioButton("orderBy", "CustomerId")
         </th>
         <th>
             <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Model desc")
+            @Html.RadioButton("orderBy", "StartDate")
         </th>
         <th>
             <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "StartDate desc")
+            @Html.RadioButton("orderBy", "EndDate")
         </th>
         <th>
             <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "EndDate desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Location desc")
+            @Html.RadioButton("orderBy", "Location")
         </th>
     </tr>
     <tr>
@@ -72,12 +64,8 @@
             @Html.Editor("plate")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Manufacturer)
-            @Html.Editor("manufacturer")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Model)
-            @Html.Editor("modelName")
+            @Html.DisplayNameFor(model => model.CustomerId)
+            @Html.Editor("customerId")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StartDate)
@@ -100,10 +88,7 @@
                 @Html.DisplayFor(modelItem => item.Plate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Manufacturer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
+                @Html.DisplayFor(modelItem => item.CustomerId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)

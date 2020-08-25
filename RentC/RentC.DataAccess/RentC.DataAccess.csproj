@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Attributes\AgeAttribute.cs" />
     <Compile Include="Attributes\CustomerExistingAttribute.cs" />
+    <Compile Include="Attributes\ReservationIdAttribute.cs" />
     <Compile Include="Attributes\TodayAttribute.cs" />
     <Compile Include="Attributes\IdIsValidAttribute.cs" />
     <Compile Include="Attributes\DateIsValidAttribute.cs" />

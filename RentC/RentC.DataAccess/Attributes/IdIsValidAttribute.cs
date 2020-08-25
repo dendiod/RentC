@@ -16,6 +16,11 @@ namespace RentC.Core
     {
         public override bool IsValid(object value)
         {
+            if (value == null)
+            {
+                return false;
+            }
+
             int id = (int)value;
             if (id < 1 || id > int.MaxValue)
             {

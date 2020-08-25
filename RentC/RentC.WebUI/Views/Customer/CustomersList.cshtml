@@ -1,0 +1,91 @@
+﻿@model IEnumerable<RentC.DataAccess.Models.QueryModels.QueryCustomer>
+
+@{
+    ViewBag.Title = "CustomersList";
+}
+
+<h2>CustomersList</h2>
+
+@using (Html.BeginForm())
+{
+<table class="table">
+    <tr>
+        <th>
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </th>
+    </tr>
+    <tr>
+        <th>
+            <label class="control-label">Sort asc</label>
+            @Html.RadioButton("orderBy", "CustomId")
+        </th>
+        <th>
+            <label class="control-label">Sort asc</label>
+            @Html.RadioButton("orderBy", "Name")
+        </th>
+        <th>
+            <label class="control-label">Sort asc</label>
+            @Html.RadioButton("orderBy", "BirthDate")
+        </th>
+        <th>
+            <label class="control-label">Sort asc</label>
+            @Html.RadioButton("orderBy", "Location")
+        </th>
+    </tr>
+    <tr>
+        <th>
+            <label class="control-label">Sort desc</label>
+            @Html.RadioButton("orderBy", "CustomId desc")
+        </th>
+        <th>
+            <label class="control-label">Sort desc</label>
+            @Html.RadioButton("orderBy", "Name desc")
+        </th>
+        <th>
+            <label class="control-label">Sort desc</label>
+            @Html.RadioButton("orderBy", "BirthDate desc")
+        </th>
+        <th>
+            <label class="control-label">Sort desc</label>
+            @Html.RadioButton("orderBy", "Location desc")
+        </th>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomId)
+            @Html.Editor("customId")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+            @Html.Editor("name")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthDate)
+            @Html.Editor("birthDate")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+            @Html.Editor("location")
+        </th>
+    </tr>    
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+        </tr>
+    }
+
+</table>
+}

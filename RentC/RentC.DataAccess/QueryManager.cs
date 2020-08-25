@@ -10,34 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Web;
 
 namespace RentC.DataAccess
-{
-    class CarComparer : IEqualityComparer<Reservation>
-    {
-        public bool Equals(Reservation x, Reservation y)
-        {
-            //Check whether the compared objects reference the same data.
-            if (Object.ReferenceEquals(x, y)) return true;
-
-            //Check whether any of the compared objects is null.
-            if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
-                return false;
-
-            //Check whether the products' properties are equal.
-            return x.CarId == y.CarId;
-        }
-
-        public int GetHashCode(Reservation car)
-        {
-            //Check whether the object is null
-            if (Object.ReferenceEquals(car, null)) return 0;
-
-            //Get hash code for the CarId field if it is not null.
-            int hasCarId = car.CarId;
-
-            //Calculate the hash code for the item.
-            return hasCarId;
-        }
-    }
+{    
     public class QueryManager
     {
         private ModelContext context;
@@ -47,39 +20,47 @@ namespace RentC.DataAccess
             context = modelContext;
         }
 
-        private T[] OrderItems<T>(bool asc, IQueryable<T> items, string orderBy)
+        private T[] OrderItems<T>(IQueryable<T> items, string orderBy)
         {
-            if (!asc)
-            {
-                orderBy += " desc";
-            }
             items = items.OrderBy(orderBy);
 
             return items.ToArray();
         }
-        public QueryCar[] GetAvailableCars(bool asc, string orderBy)
+        public QueryCar[] GetAvailableCars(string orderBy, string plate, string manufacturer,
+            string model, DateTime? startDate, DateTime? endDate, string location)
         {
-            DateTime today = DateTime.Today;
+            bool isPlateEmpty = string.IsNullOrWhiteSpace(plate);
+            bool isManufacturerEmpty = string.IsNullOrWhiteSpace(manufacturer);
+            bool isModelEmpty = string.IsNullOrWhiteSpace(model);
+            bool isLocationmpty = string.IsNullOrWhiteSpace(location);
+            if (startDate == null)
+            {
+                startDate = DateTime.Today;
+            }
 
-            var cars = (from car in context.Cars
-                       join model in context.Models on car.ModelId equals model.Id
-                       join manufacturer in context.Manufacturers on car.ManufacturerId equals manufacturer.Id
-                       join location in context.Locations on car.LocationId equals location.Id
-                       join reservation in context.Reservations on car.Id equals reservation.CarId into leftJoin
+            var cars = (from carTable in context.Cars
+                       join modelTable in context.Models on carTable.ModelId equals modelTable.Id
+                       join manufacturerTable in context.Manufacturers on carTable.ManufacturerId equals manufacturerTable.Id
+                       join locationTable in context.Locations on carTable.LocationId equals locationTable.Id
+                       join reservation in context.Reservations on carTable.Id equals reservation.CarId into leftJoin
                        from reservation in leftJoin.DefaultIfEmpty()
+                       where (!isPlateEmpty && carTable.Plate == plate || isPlateEmpty) &&
+                       (!isManufacturerEmpty && manufacturerTable.Name == manufacturer || isManufacturerEmpty) &&
+                       (!isModelEmpty && modelTable.Name == model || isModelEmpty) &&
+                       (!isLocationmpty && locationTable.Name == location || isLocationmpty)
 
                        select new QueryCar
                        {
-                           Id = car.Id,
-                           Plate = car.Plate,
-                           Model = model.Name,
-                           Manufacturer = manufacturer.Name,
-                           StartDate = reservation != null ? reservation.StartDate : today,
+                           Id = carTable.Id,
+                           Plate = carTable.Plate,
+                           Model = modelTable.Name,
+                           Manufacturer = manufacturerTable.Name,
+                           StartDate = (DateTime)(reservation != null ? reservation.StartDate : startDate),
                            EndDate = reservation != null ? reservation.EndDate : DateTime.MaxValue,
-                           Location = location.Name
+                           Location = locationTable.Name
                        }).ToList();
 
-            var reservations = context.Reservations.Where(x => x.StartDate <= today && x.EndDate >= today)
+            var reservations = context.Reservations.Where(x => x.StartDate <= startDate && x.EndDate >= startDate)
                 .Select(x => x.CarId).Distinct().OrderByDescending(x => x);
 
             for(int i = cars.Count - 1; i >= 0; --i)
@@ -97,7 +78,7 @@ namespace RentC.DataAccess
 
             if(cars.Count == 0)
             {
-                return OrderItems(asc, cars.AsQueryable(), orderBy);
+                return OrderItems(cars.AsQueryable(), orderBy);
             }
 
             List<QueryCar> newCars = new List<QueryCar>();
@@ -113,9 +94,9 @@ namespace RentC.DataAccess
                 if(cars[i].Id == cars[i - 1].Id)
                 {
                     repetition = true;
-                    if(cars[i].StartDate > today)
+                    if(cars[i].StartDate > startDate)
                     {
-                        if(carToAdd.StartDate <= today)
+                        if(carToAdd.StartDate <= startDate)
                         {
                             carToAdd = cars[i];
                         }
@@ -130,7 +111,7 @@ namespace RentC.DataAccess
                     if (repetition)
                     {
                         carToAdd.EndDate = carToAdd.StartDate;
-                        carToAdd.StartDate = today;                        
+                        carToAdd.StartDate = (DateTime)startDate;                        
                     }
                     repetition = false;
 
@@ -140,14 +121,23 @@ namespace RentC.DataAccess
             }
             newCars.Add(carToAdd);
 
-            return OrderItems(asc, newCars.AsQueryable(), orderBy);
+            return OrderItems(newCars.AsQueryable(), orderBy);
         }
 
-        public QueryReservation[] GetReservations(bool asc, string orderBy)
+        public QueryReservation[] GetReservations(string orderBy, string plate, int? customerId, DateTime? startDate,
+            DateTime? endDate, string location)
         {
+            bool isPlateEmpty = string.IsNullOrWhiteSpace(plate);
+            bool isLocationEmpty = string.IsNullOrWhiteSpace(location);
+
             var reservations = from reservation in context.Reservations
-                               join location in context.Locations on reservation.LocationId equals location.Id
+                               join locationTable in context.Locations on reservation.LocationId equals locationTable.Id
                                join car in context.Cars on reservation.CarId equals car.Id
+                               where (customerId == null || reservation.CustomerId == customerId) &&
+                               (startDate == null || reservation.StartDate == startDate) &&
+                               (endDate == null || reservation.EndDate == endDate) &&
+                               (!isPlateEmpty && car.Plate == plate || isPlateEmpty) &&
+                               (!isLocationEmpty && locationTable.Name == location || isLocationEmpty)
 
                                select new QueryReservation
                                {
@@ -156,28 +146,34 @@ namespace RentC.DataAccess
                                    CustomerId = reservation.CustomerId,
                                    StartDate = reservation.StartDate,
                                    EndDate = reservation.EndDate,
-                                   Location = location.Name
+                                   Location = locationTable.Name
                                };
 
-            return OrderItems(asc, reservations, orderBy);
+            return OrderItems(reservations, orderBy);
         }
 
-        public QueryCustomer[] GetCustomers(bool asc, string orderBy)
+        public QueryCustomer[] GetCustomers(string orderBy, int? customId, string name, DateTime? birthDate, string location)
         {
-            var customers = from customer in context.Customers
-                            join location in context.Locations on customer.LocationId equals location.Id into leftJoin
+            bool isNameEmpty = string.IsNullOrWhiteSpace(name);
+            bool isLocationEmpty = string.IsNullOrWhiteSpace(location);
 
-                            from location in leftJoin.DefaultIfEmpty()
+            var customers = from customer in context.Customers
+                            join locationTable in context.Locations on customer.LocationId equals locationTable.Id into leftJoin
+                            from locationJoined in leftJoin.DefaultIfEmpty()
+                            where (customId == null || customer.CustomId == customId) &&
+                            (birthDate == null || customer.BirthDate == birthDate) &&
+                            (!isNameEmpty && customer.Name == name || isNameEmpty) &&
+                            (!isLocationEmpty && locationJoined.Name == location || isLocationEmpty)
 
                             select new QueryCustomer
                             {
                                 CustomId = customer.CustomId,
                                 Name = customer.Name,
                                 BirthDate = customer.BirthDate,
-                                Location = location.Name ?? "undefined"
+                                Location = locationJoined.Name ?? "undefined"
                             };
 
-            return OrderItems(asc, customers, orderBy);
+            return OrderItems(customers, orderBy);
         }
     }
 }

@@ -10,6 +10,11 @@ namespace RentC.DataAccess.Attributes
     {
         public override bool IsValid(object value)
         {
+            if (value == null)
+            {
+                return false;
+            }
+
             const int minAge = 18, maxAge = 125;
             var today = DateTime.Today;
             var birthDate = (DateTime)value;

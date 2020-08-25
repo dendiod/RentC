@@ -71,9 +71,9 @@ namespace RentC.ConsoleApp
                 case "2":
                     insertUpdate.ManageReservations(false);
                     break;
-                case "3":
-                    getAndPrint.GetReservations();
-                    break;
+                //case "3":
+                //    getAndPrint.GetReservations();
+                //    break;
                 case "4":
                     getAndPrint.GetAvailableCars();
                     break;
@@ -83,9 +83,9 @@ namespace RentC.ConsoleApp
                 case "6":
                     insertUpdate.ManageCustomers(false);
                     break;
-                case "7":
-                    getAndPrint.GetCustomers();
-                    break;
+                //case "7":
+                //    getAndPrint.GetCustomers();
+                //    break;
                 case "8":
                     break;
                 default:

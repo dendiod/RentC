@@ -10,6 +10,11 @@ namespace RentC.DataAccess.Attributes
     {
         public override bool IsValid(object value)
         {
+            if (value == null)
+            {
+                return false;
+            }
+
             DateTime date = (DateTime)value;
             if (date < DateTime.Today.Date)
             {

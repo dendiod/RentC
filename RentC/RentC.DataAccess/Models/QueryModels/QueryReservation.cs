@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace RentC.DataAccess.Models.QueryModels
 {
     [StartEndDates]
+    [ReservationId]
     public class QueryReservation : IValidatableObject
     {        
         [Required]
@@ -28,8 +29,7 @@ namespace RentC.DataAccess.Models.QueryModels
         [Today(ErrorMessage = "Error. End Date is earlier than today")]
         public DateTime EndDate { get; set; }
         [Required]
-        public string Location { get; set; }
-        [IdIsValid]
+        public string Location { get; set; }        
         public int Id { get; set; }
 
         public bool IsCreating { get; set; }
@@ -67,7 +67,7 @@ namespace RentC.DataAccess.Models.QueryModels
 
             IRepo<Location> locationRepo = new SQLRepo<Location>(context);
             var location = locationRepo.Find(car.LocationId);
-            if (location == null)
+            if (location.Name != Location)
             {
                 errors.Add(new ValidationResult("This car is not available in this city"));
                 return errors;
@@ -79,7 +79,8 @@ namespace RentC.DataAccess.Models.QueryModels
 
             if (r != null)
             {
-                errors.Add(new ValidationResult(String.Format("Error. Car was rented from {0} to {1}", r.StartDate, r.EndDate)));
+                errors.Add(new ValidationResult(String.Format("Error. Car was rented from {0} to {1}",
+                    r.StartDate.ToString("dd-MM-yyyy"), r.EndDate.ToString("dd-MM-yyyy"))));
                 return errors;
             }
 

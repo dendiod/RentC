@@ -49,35 +49,35 @@ namespace RentC.ConsoleApp
             Set(propIndex, properties, GetAvailableCars, labels.Length);
             OrderByOrQuit(asc);
         }
-        internal void GetCustomers(bool asc = true, string orderBy = "CustomId", int propIndex = 1)
-        {
-            inAppBehavior.MenuItemEntry("List Customers");
+        //internal void GetCustomers(bool asc = true, string orderBy = "CustomId", int propIndex = 1)
+        //{
+        //    inAppBehavior.MenuItemEntry("List Customers");
 
-            var customers = queryManager.GetCustomers(asc, orderBy);
+        //    var customers = queryManager.GetCustomers(orderBy);
 
-            PropertyInfo[] properties = GetProps<QueryCustomer>();
-            string[] labels = { "Client Id", "Client Name", "Birth Date", "Location"};
+        //    PropertyInfo[] properties = GetProps<QueryCustomer>();
+        //    string[] labels = { "Client Id", "Client Name", "Birth Date", "Location"};
 
-            PrintList(labels, properties, customers);
+        //    PrintList(labels, properties, customers);
 
-            Set(propIndex, properties, GetCustomers, labels.Length);
-            OrderByOrQuit(asc);
-        }
+        //    Set(propIndex, properties, GetCustomers, labels.Length);
+        //    OrderByOrQuit(asc);
+        //}
 
-        internal void GetReservations(bool asc = true, string orderBy = "Id", int propIndex = 0)
-        {
-            inAppBehavior.MenuItemEntry("List Rents");
+        //internal void GetReservations(bool asc = true, string orderBy = "Id", int propIndex = 0)
+        //{
+        //    inAppBehavior.MenuItemEntry("List Rents");
 
-            var reservations = queryManager.GetReservations(asc, orderBy);
+        //    var reservations = queryManager.GetReservations(orderBy);
 
-            PropertyInfo[] properties = GetProps<QueryReservation>();
-            string[] labels = {"Car plate", "Client Id", "Start Date", "End Date", "Location" };
+        //    PropertyInfo[] properties = GetProps<QueryReservation>();
+        //    string[] labels = {"Car plate", "Client Id", "Start Date", "End Date", "Location" };
 
-            PrintList(labels, properties, reservations);
+        //    PrintList(labels, properties, reservations);
 
-            Set(propIndex, properties, GetReservations, labels.Length);
-            OrderByOrQuit(asc);
-        }        
+        //    Set(propIndex, properties, GetReservations, labels.Length);
+        //    OrderByOrQuit(asc);
+        //}        
 
         private PropertyInfo[] GetProps<T>()
         {
