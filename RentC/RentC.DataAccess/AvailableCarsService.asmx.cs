@@ -20,12 +20,10 @@ namespace RentC.DataAccess
     {
 
         [WebMethod]
-        public QueryCar[] GetAvailableCars(string orderBy, string plate, string manufacturer,
-            string model, DateTime? startDate, DateTime? endDate, string location)
+        public QueryCar[] GetAvailableCars(string orderBy, QueryCar car)
         {
             QueryManager queryManager = new QueryManager(new ModelContext());
-            return queryManager.GetAvailableCars(orderBy, plate, manufacturer, model,
-                startDate, endDate, location);
+            return queryManager.GetAvailableCars(orderBy, car);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace RentC.DataAccess.Models.QueryModels
         public string Plate { get; set; }
         public string Manufacturer{ get; set; }
         public string Model { get; set; }        
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string Location { get; set; }
     }
 }

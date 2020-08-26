@@ -16,8 +16,8 @@ namespace RentC.DataAccess.Attributes
                 return false;
             }
 
-            DateTime birthDate = (DateTime)value;  
-            if(birthDate == DateTime.MinValue)
+            DateTime date = (DateTime)value;  
+            if(date == DateTime.MinValue)
             {
                 return false;
             }

@@ -41,7 +41,7 @@ namespace RentC.ConsoleApp
             localhost.AvailableCarsService webService = new localhost.AvailableCarsService();
             localhost.QueryCar[] cars = webService.GetAvailableCars(asc, orderBy);
 
-            PropertyInfo[] properties = GetProps<localhost.QueryCar>();
+            PropertyInfo[] properties = typeof(localhost.QueryCar).GetProperties();
             string[] labels = { "Car Plate", "Car Manufacturer", "Car Model", "Start Date", "EndDate", "City" };
 
             PrintList(labels, properties, cars);
@@ -77,12 +77,7 @@ namespace RentC.ConsoleApp
 
         //    Set(propIndex, properties, GetReservations, labels.Length);
         //    OrderByOrQuit(asc);
-        //}        
-
-        private PropertyInfo[] GetProps<T>()
-        {
-            return typeof(T).GetProperties();
-        }
+        //}
 
         private void PrintList<T>(string[] labels, PropertyInfo[] properties, T[] items)
         {

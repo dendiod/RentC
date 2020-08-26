@@ -1,5 +1,6 @@
 ﻿using RentC.DataAccess.Contracts;
 using RentC.DataAccess.Models.QueryModels;
+using RentC.WebUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,15 @@ namespace RentC.WebUI.Controllers
 {
     public class CarController : Controller
     {
-        public ActionResult AvailableCars(string plate, string manufacturer, string modelName, 
-            DateTime? startDate, DateTime? endDate, string location, string orderBy = "Id")
-        {
+        public ActionResult AvailableCars(CarsViewModel viewModel, string orderBy = "Id")
+        {            
+            localhost.QueryCar car = (localhost.QueryCar)viewModel.SearchCar ?? new localhost.QueryCar();
             localhost.AvailableCarsService webService = new localhost.AvailableCarsService();
-            localhost.QueryCar[] cars = webService.GetAvailableCars(orderBy, plate, manufacturer, modelName,
-                startDate, endDate, location);
+            localhost.QueryCar[] cars = webService.GetAvailableCars(orderBy, car);
 
-            return View(cars);
+            viewModel.Cars = cars;
+
+            return View(viewModel);
         }
     }
 }

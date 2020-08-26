@@ -9,7 +9,7 @@ namespace RentC.WebUI.CustomLogic
 {
     public class Overrider
     {
-        internal void OverrideError(Controller controller, string key, string message)
+        public void OverrideError(Controller controller, string key, string message)
         {
             var modelState = controller.ModelState[key];
             for (int i = 0; i < modelState.Errors.Count; ++i)

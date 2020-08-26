@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RentC.WebUI.localhost.QueryCar>
+﻿@model RentC.WebUI.Models.CarsViewModel
 
 @{
     ViewBag.Title = "AvailableCars";
@@ -8,114 +8,134 @@
 
 @using (Html.BeginForm())
 {
-<table class="table">
-    <tr>
-        <th>
-            <input type="submit" value="Submit" class="btn btn-default" />
-        </th>
-    </tr>
-    <tr>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Plate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Manufacturer")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Model")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "StartDate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "EndDate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Location")
-        </th>
-    </tr>
-    <tr>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Plate desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Manufacturer desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Model desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "StartDate desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "EndDate desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Location desc")
-        </th>
-    </tr>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Plate)
-            @Html.Editor("plate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Manufacturer)
-            @Html.Editor("manufacturer")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Model)
-            @Html.Editor("modelName")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-            @Html.Editor("startDate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-            @Html.Editor("endDate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-            @Html.Editor("location")
-        </th>
-    </tr>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Plate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manufacturer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
+            <th>
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </th>
         </tr>
-    }
+        <tr>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Plate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Manufacturer")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Model")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "StartDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "EndDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Location")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Plate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Manufacturer desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Model desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "StartDate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "EndDate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Location desc")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Plate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => Model.SearchCar.Plate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.SearchCar.Plate, "", new { @class = "text-danger" })
+                
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Manufacturer, htmlAttributes: new { @class = "control-label col-md-2" })
+                
+                    @Html.EditorFor(model => Model.SearchCar.Manufacturer, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.SearchCar.Manufacturer, "", new { @class = "text-danger" })
+                
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Model, htmlAttributes: new { @class = "control-label col-md-2" })
+                
+                    @Html.EditorFor(model => Model.SearchCar.Model, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.SearchCar.Model, "", new { @class = "text-danger" })
+                
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                
+                    @Html.EditorFor(model => Model.SearchCar.StartDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.SearchCar.StartDate, "", new { @class = "text-danger" })
+                
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                
+                    @Html.EditorFor(model => Model.SearchCar.EndDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.SearchCar.EndDate, "", new { @class = "text-danger" })
+                
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+                
+                    @Html.EditorFor(model => Model.SearchCar.Location, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.SearchCar.Location, "", new { @class = "text-danger" })
+                
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model.Cars)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Plate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+            </tr>
+        }
+
+    </table>
 }
