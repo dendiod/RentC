@@ -1,91 +1,98 @@
-﻿@model IEnumerable<RentC.DataAccess.Models.QueryModels.QueryCustomer>
+﻿@model RentC.DataAccess.Models.ViewModels.CustomerViewModel
 
 @{
-    ViewBag.Title = "CustomersList";
+    ViewBag.Title = "Customers List";
 }
 
-<h2>CustomersList</h2>
+<h2>Customers List</h2>
 
 @using (Html.BeginForm())
 {
-<table class="table">
-    <tr>
-        <th>
-            <input type="submit" value="Submit" class="btn btn-default" />
-        </th>
-    </tr>
-    <tr>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "CustomId")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Name")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "BirthDate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Location")
-        </th>
-    </tr>
-    <tr>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "CustomId desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Name desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "BirthDate desc")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Location desc")
-        </th>
-    </tr>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomId)
-            @Html.Editor("customId")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-            @Html.Editor("name")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BirthDate)
-            @Html.Editor("birthDate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-            @Html.Editor("location")
-        </th>
-    </tr>    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
+            <th>
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </th>
         </tr>
-    }
+        <tr>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "CustomId")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Name")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "BirthDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Location")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "CustomId desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Name desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "BirthDate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Location desc")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => Model.SearchCustomer.CustomId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchCustomer.CustomId, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCustomer.CustomId, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCustomer.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchCustomer.Name, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCustomer.Name, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCustomer.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchCustomer.BirthDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCustomer.BirthDate, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCustomer.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchCustomer.Location, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCustomer.Location, "", new { @class = "text-danger" })
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model.Customers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+            </tr>
+        }
+
+    </table>
 }

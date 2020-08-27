@@ -1,4 +1,5 @@
 ﻿using RentC.DataAccess;
+using RentC.DataAccess.Models.Search;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,18 @@ namespace RentC.ConsoleApp
     {
         private ModelContext modelContext;
         private InsertUpdate insertUpdate;
-        private GetAndPrint getAndPrint;
+
+        private GetAndPrint<SearchReservation> getRents;
+        private GetAndPrint<localhost.QueryCar> getCars;
+        private GetAndPrint<SearchCustomer> getCustomers;
 
         public InAppBehavior()
         {
             modelContext = new ModelContext();
             insertUpdate = new InsertUpdate(modelContext, this);
-            getAndPrint = new GetAndPrint(modelContext, this);
+            getRents = new GetAndPrint<SearchReservation>(modelContext, this, new SearchReservation());
+            getCars = new GetAndPrint<localhost.QueryCar>(modelContext, this, new localhost.QueryCar());
+            getCustomers = new GetAndPrint<SearchCustomer>(modelContext, this, new SearchCustomer());
         }
         internal void WelcommmingScreen()
         {
@@ -71,11 +77,11 @@ namespace RentC.ConsoleApp
                 case "2":
                     insertUpdate.ManageReservations(false);
                     break;
-                //case "3":
-                //    getAndPrint.GetReservations();
-                //    break;
+                case "3":
+                    getRents.GetReservations();
+                    break;
                 case "4":
-                    getAndPrint.GetAvailableCars();
+                    getCars.GetAvailableCars();
                     break;
                 case "5":
                     insertUpdate.ManageCustomers(true);
@@ -83,9 +89,9 @@ namespace RentC.ConsoleApp
                 case "6":
                     insertUpdate.ManageCustomers(false);
                     break;
-                //case "7":
-                //    getAndPrint.GetCustomers();
-                //    break;
+                case "7":
+                    getCustomers.GetCustomers();
+                    break;
                 case "8":
                     break;
                 default:

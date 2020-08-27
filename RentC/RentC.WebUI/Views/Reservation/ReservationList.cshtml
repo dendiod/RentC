@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RentC.DataAccess.Models.QueryModels.QueryReservation>
+﻿@model RentC.DataAccess.Models.ViewModels.ReservationViewModel
 
 @{
     ViewBag.Title = "ReservationList";
@@ -8,99 +8,107 @@
 
 @using (Html.BeginForm())
 {
-<table class="table">
-    <tr>
-        <th>
-            <input type="submit" value="Submit" class="btn btn-default" />
-        </th>
-    </tr>
-    <tr>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Plate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "CustomerId")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "StartDate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "EndDate")
-        </th>
-        <th>
-            <label class="control-label">Sort asc</label>
-            @Html.RadioButton("orderBy", "Location")
-        </th>
-    </tr>
-    <tr>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Plate")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "CustomerId")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "StartDate")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "EndDate")
-        </th>
-        <th>
-            <label class="control-label">Sort desc</label>
-            @Html.RadioButton("orderBy", "Location")
-        </th>
-    </tr>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Plate)
-            @Html.Editor("plate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerId)
-            @Html.Editor("customerId")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-            @Html.Editor("startDate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-            @Html.Editor("endDate")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-            @Html.Editor("location")
-        </th>
-    </tr>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Plate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
+            <th>
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </th>
         </tr>
-    }
+        <tr>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Plate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "CustomerId")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "StartDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "EndDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Location")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Plate")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "CustomerId")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "StartDate")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "EndDate")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Location")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => Model.SearchReservation.Plate, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchReservation.Plate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchReservation.Plate, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchReservation.CustomerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchReservation.CustomerId, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchReservation.CustomerId, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchReservation.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchReservation.StartDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchReservation.StartDate, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchReservation.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchReservation.EndDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchReservation.EndDate, "", new { @class = "text-danger" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchReservation.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchReservation.Location, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchReservation.Location, "", new { @class = "text-danger" })
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model.Reservations)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Plate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+            </tr>
+        }
+
+    </table>
 }

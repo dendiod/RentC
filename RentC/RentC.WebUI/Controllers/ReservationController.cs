@@ -2,6 +2,8 @@
 using RentC.DataAccess.Contracts;
 using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
+using RentC.DataAccess.Models.Search;
+using RentC.DataAccess.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,13 +58,20 @@ namespace RentC.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult ReservationList(string plate, int? customerId, DateTime? startDate,
-            DateTime? endDate, string location, string orderBy = "Id")
+        public ActionResult ReservationList(ReservationViewModel viewModel, string orderBy = "Id")
         {
+            if (!ModelState.IsValid)
+            {
+                return View(new ReservationViewModel() { Reservations = new List<QueryReservation>() });
+            }
+            SearchReservation r = viewModel.SearchReservation ?? new SearchReservation();
             QueryManager queryManager = new QueryManager(repo.GetContext());
-            var reservations = queryManager.GetReservations(orderBy, plate, customerId, startDate, endDate, location);
+            QueryReservation[] reservations = queryManager.GetReservations(orderBy, r);
 
-            return View(reservations);
+            viewModel.Reservations = reservations;
+            viewModel.SearchReservation = new SearchReservation();
+
+            return View(viewModel);
         }
     }
 }

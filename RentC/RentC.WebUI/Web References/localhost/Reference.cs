@@ -20,8 +20,9 @@ namespace RentC.WebUI.localhost {
     using System.Web.Services.Protocols;
     using System.Xml.Serialization;
     using System.ComponentModel;
-    
-    
+    using RentC.DataAccess.Attributes.Search;
+
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -129,6 +130,7 @@ namespace RentC.WebUI.localhost {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    [SearchDates]
     public partial class QueryCar : BaseEntity {
         
         private string plateField;
@@ -175,6 +177,7 @@ namespace RentC.WebUI.localhost {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [SearchToday(ErrorMessage = "Start Date can't be earlier than today")]
         public System.Nullable<System.DateTime> StartDate {
             get {
                 return this.startDateField;
@@ -186,6 +189,7 @@ namespace RentC.WebUI.localhost {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [SearchToday(ErrorMessage ="End Date can't be earlier than today")]
         public System.Nullable<System.DateTime> EndDate {
             get {
                 return this.endDateField;

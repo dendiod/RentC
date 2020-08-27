@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess;
+using RentC.DataAccess.Models.Search;
 
 namespace RentC.ConsoleApp
 {    
-    public class GetAndPrint
+    public class GetAndPrint<T>
     {
         private ModelContext modelContext;
         private QueryManager queryManager;
@@ -17,29 +18,38 @@ namespace RentC.ConsoleApp
 
         private int propIndex;
         private PropertyInfo[] properties;
-        private Action<bool, string, int> action;
+        private Action<string, int> action;
         private int optionsLength;
+        private T searchItem;       
 
-        private void Set(int propIndex, PropertyInfo[]properties, Action<bool, string, int> action, int optionsLength)
-        {
-            this.propIndex = propIndex;
-            this.properties = properties;
-            this.action = action;
-            this.optionsLength = optionsLength;
-        }
-
-        public GetAndPrint(ModelContext modelContext, InAppBehavior inAppBehavior)
+        public GetAndPrint(ModelContext modelContext, InAppBehavior inAppBehavior, T searchItem)
         {
             this.modelContext = modelContext;
             queryManager = new QueryManager(modelContext);
             this.inAppBehavior = inAppBehavior;
+            this.searchItem = searchItem;
         }
-        internal void GetAvailableCars(bool asc = true, string orderBy = "Id", int propIndex = 0)
+
+        private void Set(int propIndex, PropertyInfo[] properties, Action<string, int> action, int optionsLength)
+        {
+            this.propIndex = propIndex;
+            this.properties = properties;
+            this.action = action;
+            this.optionsLength = optionsLength;            
+        }
+
+        private void PrepareOrderBy(string orderBy)
+        {
+            bool asc = !orderBy.EndsWith(" desc");
+            OrderByOrQuit(asc);
+        }
+
+        internal void GetAvailableCars(string orderBy = "Id", int propIndex = 0)
         {
             inAppBehavior.MenuItemEntry("List Available Cars");
 
             localhost.AvailableCarsService webService = new localhost.AvailableCarsService();
-            localhost.QueryCar[] cars = webService.GetAvailableCars(asc, orderBy);
+            localhost.QueryCar[] cars = webService.GetAvailableCars(orderBy, searchItem as localhost.QueryCar);
 
             PropertyInfo[] properties = typeof(localhost.QueryCar).GetProperties();
             string[] labels = { "Car Plate", "Car Manufacturer", "Car Model", "Start Date", "EndDate", "City" };
@@ -47,50 +57,50 @@ namespace RentC.ConsoleApp
             PrintList(labels, properties, cars);
 
             Set(propIndex, properties, GetAvailableCars, labels.Length);
-            OrderByOrQuit(asc);
+            PrepareOrderBy(orderBy);
         }
-        //internal void GetCustomers(bool asc = true, string orderBy = "CustomId", int propIndex = 1)
-        //{
-        //    inAppBehavior.MenuItemEntry("List Customers");
+        internal void GetCustomers(string orderBy = "CustomId", int propIndex = 1)
+        {
+            inAppBehavior.MenuItemEntry("List Customers");
 
-        //    var customers = queryManager.GetCustomers(orderBy);
+            var customers = queryManager.GetCustomers(orderBy, searchItem as SearchCustomer);
 
-        //    PropertyInfo[] properties = GetProps<QueryCustomer>();
-        //    string[] labels = { "Client Id", "Client Name", "Birth Date", "Location"};
+            PropertyInfo[] properties = typeof(QueryCustomer).GetProperties();
+            string[] labels = { "Client Id", "Client Name", "Birth Date", "Location" };
 
-        //    PrintList(labels, properties, customers);
+            PrintList(labels, properties, customers);
 
-        //    Set(propIndex, properties, GetCustomers, labels.Length);
-        //    OrderByOrQuit(asc);
-        //}
+            Set(propIndex, properties, GetCustomers, labels.Length);
+            PrepareOrderBy(orderBy);
+        }
 
-        //internal void GetReservations(bool asc = true, string orderBy = "Id", int propIndex = 0)
-        //{
-        //    inAppBehavior.MenuItemEntry("List Rents");
+        internal void GetReservations(string orderBy = "Id", int propIndex = 0)
+        {
+            inAppBehavior.MenuItemEntry("List Rents");
 
-        //    var reservations = queryManager.GetReservations(orderBy);
+            var reservations = queryManager.GetReservations(orderBy, searchItem as SearchReservation);
 
-        //    PropertyInfo[] properties = GetProps<QueryReservation>();
-        //    string[] labels = {"Car plate", "Client Id", "Start Date", "End Date", "Location" };
+            PropertyInfo[] properties = typeof(QueryReservation).GetProperties();
+            string[] labels = { "Car plate", "Client Id", "Start Date", "End Date", "Location" };
 
-        //    PrintList(labels, properties, reservations);
+            PrintList(labels, properties, reservations);
 
-        //    Set(propIndex, properties, GetReservations, labels.Length);
-        //    OrderByOrQuit(asc);
-        //}
+            Set(propIndex, properties, GetReservations, labels.Length);
+            PrepareOrderBy(orderBy);
+        }
 
-        private void PrintList<T>(string[] labels, PropertyInfo[] properties, T[] items)
+        private void PrintList<U>(string[] labels, PropertyInfo[] properties, U[] items)
         {
             int labelsLength = labels.Length;
 
             StringBuilder sb = new StringBuilder();
-            foreach (T t in items)
+            foreach (U item in items)
             {
                 sb.Append("------------------------------------------------\n");
                 for (int i = 0; i < labelsLength; ++i)
                 {
-                    var value = properties[i].GetValue(t, null);                    
-                    if(properties[i].PropertyType.Name == "DateTime")
+                    var value = properties[i].GetValue(item, null);                    
+                    if(properties[i].PropertyType.Name.StartsWith("DateTime"))
                     {
                         value = ((DateTime)value).ToString("dd-MM-yyyy");                        
                     }
@@ -127,7 +137,13 @@ namespace RentC.ConsoleApp
             }
 
             asc = lastPropIndex == propIndex ? !asc : true;
-            action(asc, properties[propIndex - 1].Name, propIndex);
+            string orderBy = properties[propIndex - 1].Name;
+            if (!asc)
+            {
+                orderBy += " desc";
+            }
+
+            action(orderBy, propIndex);
         }        
     }
 }

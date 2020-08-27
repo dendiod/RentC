@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RentC.WebUI.Models
+namespace RentC.DataAccess.Models.ViewModels
 {
-    public class CarsViewModel
+    public class CarsViewModel<T>
     {
-        public IEnumerable<QueryCar> Cars { get; set; }
-        public QueryCar SearchCar { get; set; }
+        public IEnumerable<T> Cars { get; set; }
+        public T SearchCar { get; set; }
     }
 }

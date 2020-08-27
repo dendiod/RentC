@@ -1,5 +1,6 @@
 ﻿using RentC.DataAccess.Contracts;
 using RentC.DataAccess.Models;
+using RentC.DataAccess.Models.QueryModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,13 +13,14 @@ namespace RentC.DataAccess.Attributes
     {
         public override bool IsValid(object value)
         {
+            var reservation = value as QueryReservation; 
             if(value == null)
             {
                 return false;
             }
 
             IRepo<Customer> customerRepo = new SQLRepo<Customer>(new ModelContext());
-            var customer = customerRepo.FirstOrDefault(x => x.CustomId == (int)value);
+            var customer = customerRepo.FirstOrDefault(x => x.CustomId == (int)reservation.CustomerId);
 
             if (customer == null)
             {

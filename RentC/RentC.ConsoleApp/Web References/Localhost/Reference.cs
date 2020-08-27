@@ -75,26 +75,26 @@ namespace RentC.ConsoleApp.localhost {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAvailableCars", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public QueryCar[] GetAvailableCars(bool asc, string orderBy) {
+        public QueryCar[] GetAvailableCars(string orderBy, QueryCar car) {
             object[] results = this.Invoke("GetAvailableCars", new object[] {
-                        asc,
-                        orderBy});
+                        orderBy,
+                        car});
             return ((QueryCar[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetAvailableCarsAsync(bool asc, string orderBy) {
-            this.GetAvailableCarsAsync(asc, orderBy, null);
+        public void GetAvailableCarsAsync(string orderBy, QueryCar car) {
+            this.GetAvailableCarsAsync(orderBy, car, null);
         }
         
         /// <remarks/>
-        public void GetAvailableCarsAsync(bool asc, string orderBy, object userState) {
+        public void GetAvailableCarsAsync(string orderBy, QueryCar car, object userState) {
             if ((this.GetAvailableCarsOperationCompleted == null)) {
                 this.GetAvailableCarsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableCarsOperationCompleted);
             }
             this.InvokeAsync("GetAvailableCars", new object[] {
-                        asc,
-                        orderBy}, this.GetAvailableCarsOperationCompleted, userState);
+                        orderBy,
+                        car}, this.GetAvailableCarsOperationCompleted, userState);
         }
         
         private void OnGetAvailableCarsOperationCompleted(object arg) {
@@ -137,9 +137,9 @@ namespace RentC.ConsoleApp.localhost {
         
         private string modelField;
         
-        private System.DateTime startDateField;
+        private System.Nullable<System.DateTime> startDateField;
         
-        private System.DateTime endDateField;
+        private System.Nullable<System.DateTime> endDateField;
         
         private string locationField;
         
@@ -174,7 +174,8 @@ namespace RentC.ConsoleApp.localhost {
         }
         
         /// <remarks/>
-        public System.DateTime StartDate {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<System.DateTime> StartDate {
             get {
                 return this.startDateField;
             }
@@ -184,7 +185,8 @@ namespace RentC.ConsoleApp.localhost {
         }
         
         /// <remarks/>
-        public System.DateTime EndDate {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public System.Nullable<System.DateTime> EndDate {
             get {
                 return this.endDateField;
             }

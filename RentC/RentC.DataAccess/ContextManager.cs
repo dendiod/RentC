@@ -51,11 +51,15 @@ namespace RentC.DataAccess
         public void ManageReservations(bool creating, QueryReservation queryReservation)
         {
             Reservation r = creating ? new Reservation() : queryReservation.Reservation;
-            r.CarId = queryReservation.CarId;
-            r.CustomerId = queryReservation.CustomerId;
-            r.StartDate = queryReservation.StartDate;
-            r.EndDate = queryReservation.EndDate;
-            r.LocationId = queryReservation.LocationId;
+            if ((bool)queryReservation.IsCreating)
+            {
+                r.CarId = queryReservation.CarId;
+                r.CustomerId = (int)queryReservation.CustomerId;
+                r.LocationId = queryReservation.LocationId;
+            }            
+            r.StartDate = (DateTime)queryReservation.StartDate;
+            r.EndDate = (DateTime)queryReservation.EndDate;
+            
 
             InsertUpdateCommit(creating, r);
         }

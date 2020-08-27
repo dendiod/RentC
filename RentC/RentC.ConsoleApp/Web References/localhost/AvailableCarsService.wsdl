@@ -5,11 +5,30 @@
       <s:element name="GetAvailableCars">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="asc" type="s:boolean" />
             <s:element minOccurs="0" maxOccurs="1" name="orderBy" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="car" type="tns:QueryCar" />
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:complexType name="QueryCar">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseEntity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Plate" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Manufacturer" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="StartDate" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="EndDate" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BaseEntity" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="GetAvailableCarsResponse">
         <s:complexType>
           <s:sequence>
@@ -20,25 +39,6 @@
       <s:complexType name="ArrayOfQueryCar">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="unbounded" name="QueryCar" nillable="true" type="tns:QueryCar" />
-        </s:sequence>
-      </s:complexType>
-      <s:complexType name="QueryCar">
-        <s:complexContent mixed="false">
-          <s:extension base="tns:BaseEntity">
-            <s:sequence>
-              <s:element minOccurs="0" maxOccurs="1" name="Plate" type="s:string" />
-              <s:element minOccurs="0" maxOccurs="1" name="Manufacturer" type="s:string" />
-              <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
-              <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
-              <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
-              <s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />
-            </s:sequence>
-          </s:extension>
-        </s:complexContent>
-      </s:complexType>
-      <s:complexType name="BaseEntity" abstract="true">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
         </s:sequence>
       </s:complexType>
     </s:schema>

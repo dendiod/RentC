@@ -2,6 +2,8 @@
 using RentC.DataAccess.Contracts;
 using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
+using RentC.DataAccess.Models.Search;
+using RentC.DataAccess.Models.ViewModels;
 using RentC.WebUI.CustomLogic;
 using System;
 using System.Collections.Generic;
@@ -59,13 +61,20 @@ namespace RentC.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult CustomersList(int? customId, string name, DateTime? birthDate,
-            string location, string orderBy = "CustomId")
+        public ActionResult CustomersList(CustomerViewModel viewModel, string orderBy = "CustomId")
         {
+            if (!ModelState.IsValid)
+            {
+                return View(new CustomerViewModel() { Customers = new List<QueryCustomer>() });
+            }
+            SearchCustomer c = viewModel.SearchCustomer ?? new SearchCustomer();
             QueryManager queryManager = new QueryManager(repo.GetContext());
-            var customers = queryManager.GetCustomers(orderBy, customId, name, birthDate, location);
+            QueryCustomer[] customers = queryManager.GetCustomers(orderBy, c);
 
-            return View(customers);
+            viewModel.Customers = customers;
+            viewModel.SearchCustomer = new SearchCustomer();
+
+            return View(viewModel);
         }
 
         private void OverrideError()

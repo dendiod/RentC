@@ -1,5 +1,6 @@
 ﻿using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
+using RentC.DataAccess.Models.Search;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -181,11 +182,18 @@ namespace RentC.DataAccess
             return OrderItems(newCars.AsQueryable(), orderBy);
         }
 
-        public QueryReservation[] GetReservations(string orderBy, string plate, int? customerId, DateTime? startDate,
-            DateTime? endDate, string location)
+        public QueryReservation[] GetReservations(string orderBy, SearchReservation r)
         {
+            string plate = r.Plate;
+            string location = r.Location;
+            int? customerId = r.CustomerId;
+            DateTime? startDate = r.StartDate;
+            DateTime? endDate = r.EndDate;
+
             bool isPlateEmpty = string.IsNullOrWhiteSpace(plate);
             bool isLocationEmpty = string.IsNullOrWhiteSpace(location);
+            bool isStartDateNull = startDate == null;
+            bool isEndDateNull = endDate == null;
 
             var reservations = from reservation in context.Reservations
                                join locationTable in context.Locations on reservation.LocationId equals locationTable.Id
@@ -209,8 +217,13 @@ namespace RentC.DataAccess
             return OrderItems(reservations, orderBy);
         }
 
-        public QueryCustomer[] GetCustomers(string orderBy, int? customId, string name, DateTime? birthDate, string location)
+        public QueryCustomer[] GetCustomers(string orderBy, SearchCustomer c)
         {
+            int? customId = c.CustomId;
+            string name = c.Name;
+            string location = c.Location;            
+            DateTime? birthDate = c.BirthDate;
+
             bool isNameEmpty = string.IsNullOrWhiteSpace(name);
             bool isLocationEmpty = string.IsNullOrWhiteSpace(location);
 

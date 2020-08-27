@@ -102,6 +102,10 @@
     <Compile Include="Attributes\AgeAttribute.cs" />
     <Compile Include="Attributes\CustomerExistingAttribute.cs" />
     <Compile Include="Attributes\ReservationIdAttribute.cs" />
+    <Compile Include="Attributes\ReservationInsertAttribute.cs" />
+    <Compile Include="Attributes\Search\SearchAgeAttribute.cs" />
+    <Compile Include="Attributes\Search\SearchDatesAttribute.cs" />
+    <Compile Include="Attributes\Search\SearchTodayAttribute.cs" />
     <Compile Include="Attributes\TodayAttribute.cs" />
     <Compile Include="Attributes\IdIsValidAttribute.cs" />
     <Compile Include="Attributes\DateIsValidAttribute.cs" />
@@ -111,7 +115,11 @@
     </Compile>
     <Compile Include="ContextManager.cs" />
     <Compile Include="Contracts\IRepo.cs" />
+    <Compile Include="Models\Search\SearchCustomer.cs" />
+    <Compile Include="Models\Search\SearchReservation.cs" />
     <Compile Include="Models\ViewModels\CarsViewModel.cs" />
+    <Compile Include="Models\ViewModels\CustomerViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReservationViewModel.cs" />
     <Compile Include="QueryManager.cs" />
     <Compile Include="SQLRepo.cs" />
     <Compile Include="ModelContext.cs" />

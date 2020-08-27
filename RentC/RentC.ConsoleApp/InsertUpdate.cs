@@ -76,7 +76,14 @@ namespace RentC.ConsoleApp
             DateTime birthDate = ReadDate("Birth Date: ");
             string location = ReadString("Location: ");
 
-            QueryCustomer queryCustomer = new QueryCustomer { CustomId = id, Name = name, BirthDate = birthDate, Location = location, IsCreating = isCreating};
+            QueryCustomer queryCustomer = new QueryCustomer 
+            { 
+                CustomId = id, 
+                Name = name,
+                BirthDate = birthDate, 
+                Location = location,
+                IsCreating = isCreating
+            };
 
             PushModel(queryCustomer, isCreating, contextManager.ManageCustomers, ManageCustomers);
         }
@@ -89,23 +96,27 @@ namespace RentC.ConsoleApp
             if (!isCreating)
             {
                 id = ReadInt("Reservation ID: ");
-            }
-            string plate = ReadString("Car Plate: ");
-            int customerId = ReadInt("Client ID: ");
+            }            
             DateTime startDate = ReadDate("Start Date: ");
-            DateTime endDate = ReadDate("End Date: ");            
-            string location = ReadString("City: ");
+            DateTime endDate = ReadDate("End Date: ");         
 
             QueryReservation queryReservation = new QueryReservation
             {
                 Id = id,
-                Plate = plate,
-                CustomerId = customerId,
                 StartDate = startDate,
                 EndDate = endDate,
-                Location = location,
                 IsCreating = isCreating
             };
+
+            if (isCreating)
+            {
+                string plate = ReadString("Car Plate: ");
+                int customerId = ReadInt("Client ID: ");
+                string location = ReadString("City: ");
+                queryReservation.Plate = plate;
+                queryReservation.CustomerId = customerId;
+                queryReservation.Location = location;
+            }
 
             PushModel(queryReservation, isCreating, contextManager.ManageReservations, ManageReservations);
         }        
