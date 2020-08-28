@@ -18,48 +18,22 @@ namespace RentC.ConsoleApp
         private ModelContext modelContext;
         private InAppBehavior inAppBehavior;
         private ContextManager contextManager;
+        private ReadFromConsole reader;
+        private CustomValidator validator;
+
         public InsertUpdate(ModelContext modelContext, InAppBehavior inAppBehavior)
         {
             this.modelContext = modelContext;
             this.inAppBehavior = inAppBehavior;
             this.contextManager = new ContextManager(modelContext);
-        }
-
-        private int ReadInt(string message)
-        {
-            Console.Write(message);
-            int num;
-            int.TryParse(Console.ReadLine().Trim(), out num);
-            return num;
-        }
-
-        private string ReadString(string message)
-        {
-            Console.Write(message);
-            return Console.ReadLine();
-        }
-
-        private DateTime ReadDate(string message)
-        {
-            DateTime date;
-            Console.Write(message);
-            DateTime.TryParseExact(Console.ReadLine().Trim(),
-                "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
-            return date;
-        } 
+            reader = new ReadFromConsole();
+            validator = new CustomValidator(inAppBehavior);
+        }         
 
         private void PushModel<T>(T model, bool creating, Action<bool, T> nextAction, Action<bool>curAction)
         {
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(model);
-            if (!Validator.TryValidateObject(model, context, results, true))
+            if(!validator.IsValid(model, curAction, creating))
             {
-                Console.WriteLine();
-                foreach (var error in results)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-                inAppBehavior.ContinueOrQuit(curAction, inAppBehavior.Menu, creating);
                 return;
             }
             
@@ -71,10 +45,10 @@ namespace RentC.ConsoleApp
         {
             inAppBehavior.MenuItemEntry("Register new Customer", "Update Customer", isCreating);
 
-            int id = ReadInt("Client ID: ");
-            string name = ReadString("Client Name: ");
-            DateTime birthDate = ReadDate("Birth Date: ");
-            string location = ReadString("Location: ");
+            int id = reader.ReadInt("Client ID: ");
+            string name = reader.ReadString("Client Name: ");
+            DateTime birthDate = reader.ReadDate("Birth Date: ");
+            string location = reader.ReadString("Location: ");
 
             QueryCustomer queryCustomer = new QueryCustomer 
             { 
@@ -95,10 +69,10 @@ namespace RentC.ConsoleApp
             int id = 1;
             if (!isCreating)
             {
-                id = ReadInt("Reservation ID: ");
+                id = reader.ReadInt("Reservation ID: ");
             }            
-            DateTime startDate = ReadDate("Start Date: ");
-            DateTime endDate = ReadDate("End Date: ");         
+            DateTime startDate = reader.ReadDate("Start Date: ");
+            DateTime endDate = reader.ReadDate("End Date: ");         
 
             QueryReservation queryReservation = new QueryReservation
             {
@@ -110,9 +84,9 @@ namespace RentC.ConsoleApp
 
             if (isCreating)
             {
-                string plate = ReadString("Car Plate: ");
-                int customerId = ReadInt("Client ID: ");
-                string location = ReadString("City: ");
+                string plate = reader.ReadString("Car Plate: ");
+                int customerId = reader.ReadInt("Client ID: ");
+                string location = reader.ReadString("City: ");
                 queryReservation.Plate = plate;
                 queryReservation.CustomerId = customerId;
                 queryReservation.Location = location;

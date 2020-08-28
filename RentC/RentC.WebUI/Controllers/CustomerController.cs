@@ -3,12 +3,9 @@ using RentC.DataAccess.Contracts;
 using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess.Models.Search;
-using RentC.DataAccess.Models.ViewModels;
+using RentC.WebUI.Models;
 using RentC.WebUI.CustomLogic;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace RentC.WebUI.Controllers
@@ -33,7 +30,7 @@ namespace RentC.WebUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                OverrideError();
+                OverrideErrorMessage();
                 return View(customer);
             }
 
@@ -52,7 +49,7 @@ namespace RentC.WebUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                OverrideError();
+                OverrideErrorMessage();
                 return View(customer);
             }
 
@@ -77,7 +74,7 @@ namespace RentC.WebUI.Controllers
             return View(viewModel);
         }
 
-        private void OverrideError()
+        private void OverrideErrorMessage()
         {
             Overrider overrider = new Overrider();
             overrider.OverrideError(this, "BirthDate", "Date should be in format dd-MM-yyyy");

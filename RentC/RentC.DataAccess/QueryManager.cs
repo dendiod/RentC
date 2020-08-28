@@ -3,6 +3,7 @@ using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess.Models.Search;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
@@ -219,29 +220,65 @@ namespace RentC.DataAccess
 
         public QueryCustomer[] GetCustomers(string orderBy, SearchCustomer c)
         {
+            var customers = GetUnorderedCustomers(c);
+            return OrderItems(customers, orderBy);
+        }
+
+        private IQueryable<QueryCustomer> GetUnorderedCustomers(SearchCustomer c)
+        {
             int? customId = c.CustomId;
             string name = c.Name;
-            string location = c.Location;            
+            string location = c.Location;
             DateTime? birthDate = c.BirthDate;
 
             bool isNameEmpty = string.IsNullOrWhiteSpace(name);
             bool isLocationEmpty = string.IsNullOrWhiteSpace(location);
 
-            var customers = from customer in context.Customers
-                            join locationTable in context.Locations on customer.LocationId equals locationTable.Id into leftJoin
-                            from locationJoined in leftJoin.DefaultIfEmpty()
-                            where (customId == null || customer.CustomId == customId) &&
-                            (birthDate == null || customer.BirthDate == birthDate) &&
-                            (!isNameEmpty && customer.Name == name || isNameEmpty) &&
-                            (!isLocationEmpty && locationJoined.Name == location || isLocationEmpty)
+            return from customer in context.Customers
+                   join locationTable in context.Locations on customer.LocationId equals locationTable.Id into leftJoin
+                   from locationJoined in leftJoin.DefaultIfEmpty()
+                   where (customId == null || customer.CustomId == customId) &&
+                   (birthDate == null || customer.BirthDate == birthDate) &&
+                   (!isNameEmpty && customer.Name == name || isNameEmpty) &&
+                   (!isLocationEmpty && locationJoined.Name == location || isLocationEmpty)
 
-                            select new QueryCustomer
-                            {
-                                CustomId = customer.CustomId,
-                                Name = customer.Name,
-                                BirthDate = customer.BirthDate,
-                                Location = locationJoined.Name ?? "undefined"
-                            };
+                   select new QueryCustomer
+                   {
+                       CustomId = customer.CustomId,
+                       Name = customer.Name,
+                       BirthDate = customer.BirthDate,
+                       Location = locationJoined.Name ?? "undefined"
+                   };
+        }
+
+        public QueryCustomer[] GetVipCustomers(string orderBy, SearchCustomer c)
+        {
+            var reservations = from reservation in context.Reservations
+                               let subtraction = DbFunctions.DiffDays(reservation.StartDate,DateTime.Today)
+                               where subtraction <= 30 && subtraction >= 0
+                               group reservation by reservation.CustomerId into g
+
+                               select new
+                               {
+                                   CustomerId = g.Key,
+                                   ReservationsCount = g.Count()
+                               };
+
+            var tempCustomers = GetUnorderedCustomers(c);
+
+            var customers = from customer in tempCustomers
+                            join reservation in reservations on customer.CustomId equals reservation.CustomerId
+                            where reservation.ReservationsCount > 1
+
+                                  select new QueryCustomer
+                                  {
+                                      CustomId = customer.CustomId,
+                                      Name = customer.Name,
+                                      BirthDate = customer.BirthDate,
+                                      Location = customer.Location,
+                                      ReservationsCount = reservation.ReservationsCount,
+                                      Status = reservation.ReservationsCount < 4 ? "Silver" : "Gold"
+                                  };
 
             return OrderItems(customers, orderBy);
         }

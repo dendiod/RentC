@@ -7,35 +7,38 @@ using System.Threading.Tasks;
 using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess;
 using RentC.DataAccess.Models.Search;
+using System.Reflection.Emit;
 
 namespace RentC.ConsoleApp
 {    
     public class GetAndPrint<T>
     {
-        private ModelContext modelContext;
-        private QueryManager queryManager;
-        private InAppBehavior inAppBehavior;
+        private readonly QueryManager queryManager;
+        private readonly InAppBehavior inAppBehavior;
+        private readonly Searcher<T> searcher;
 
         private int propIndex;
         private PropertyInfo[] properties;
         private Action<string, int> action;
         private int optionsLength;
-        private T searchItem;       
+        private readonly T searchItem;
+        string orderBy = "";
 
         public GetAndPrint(ModelContext modelContext, InAppBehavior inAppBehavior, T searchItem)
         {
-            this.modelContext = modelContext;
             queryManager = new QueryManager(modelContext);
             this.inAppBehavior = inAppBehavior;
             this.searchItem = searchItem;
+            searcher = new Searcher<T>(inAppBehavior, searchItem);
         }
 
-        private void Set(int propIndex, PropertyInfo[] properties, Action<string, int> action, int optionsLength)
+        private void Set(int propIndex, PropertyInfo[] properties, Action<string, int> action, int optionsLength, string orderBy)
         {
             this.propIndex = propIndex;
             this.properties = properties;
             this.action = action;
-            this.optionsLength = optionsLength;            
+            this.optionsLength = optionsLength;
+            this.orderBy = orderBy;
         }
 
         private void PrepareOrderBy(string orderBy)
@@ -56,7 +59,7 @@ namespace RentC.ConsoleApp
 
             PrintList(labels, properties, cars);
 
-            Set(propIndex, properties, GetAvailableCars, labels.Length);
+            Set(propIndex, properties, GetAvailableCars, labels.Length, orderBy);
             PrepareOrderBy(orderBy);
         }
         internal void GetCustomers(string orderBy = "CustomId", int propIndex = 1)
@@ -70,7 +73,22 @@ namespace RentC.ConsoleApp
 
             PrintList(labels, properties, customers);
 
-            Set(propIndex, properties, GetCustomers, labels.Length);
+            Set(propIndex, properties, GetCustomers, labels.Length, orderBy);
+            PrepareOrderBy(orderBy);
+        }
+
+        internal void GetVipCustomers(string orderBy = "CustomId", int propIndex = 1)
+        {
+            inAppBehavior.MenuItemEntry("Vip Customers");
+
+            var customers = queryManager.GetCustomers(orderBy, searchItem as SearchCustomer);
+
+            PropertyInfo[] properties = typeof(QueryCustomer).GetProperties();
+            string[] labels = { "Client Id", "Client Name", "Birth Date", "Location" };
+
+            PrintList(labels, properties, customers);
+
+            Set(propIndex, properties, GetCustomers, labels.Length, orderBy);
             PrepareOrderBy(orderBy);
         }
 
@@ -85,7 +103,7 @@ namespace RentC.ConsoleApp
 
             PrintList(labels, properties, reservations);
 
-            Set(propIndex, properties, GetReservations, labels.Length);
+            Set(propIndex, properties, GetReservations, labels.Length, orderBy);
             PrepareOrderBy(orderBy);
         }
 
@@ -99,8 +117,9 @@ namespace RentC.ConsoleApp
                 sb.Append("------------------------------------------------\n");
                 for (int i = 0; i < labelsLength; ++i)
                 {
-                    var value = properties[i].GetValue(item, null);                    
-                    if(properties[i].PropertyType.Name.StartsWith("DateTime"))
+                    var value = properties[i].GetValue(item, null);
+                    DateTime temp;
+                    if(DateTime.TryParse(value.ToString(), out temp))
                     {
                         value = ((DateTime)value).ToString("dd-MM-yyyy");                        
                     }
@@ -108,12 +127,13 @@ namespace RentC.ConsoleApp
                     sb.Append(labels[i] + ": " + value + "\n");
                 }
             }
-            sb.Append("\nSort by\n");
+            sb.Append("\n");
             for (int i = 1; i <= labelsLength; ++i)
             {
-                sb.Append(i.ToString() + " - " + labels[i - 1] + "\n");
+                sb.Append(i.ToString() + " - Sort by " + labels[i - 1] + "\n");
             }
-            sb.Append((labelsLength + 1).ToString() + " - Quit\n");
+            sb.Append("\n" + (labelsLength + 1).ToString() + " - Search\n");
+            sb.Append((labelsLength + 2).ToString() + " - Quit\n");
             Console.WriteLine(sb);
         }
 
@@ -123,27 +143,34 @@ namespace RentC.ConsoleApp
             int lastPropIndex = propIndex;
             int.TryParse(Console.ReadLine().Trim(), out propIndex);
 
-            if(propIndex < 1 || propIndex > optionsLength)
-            {
-                if (propIndex != optionsLength + 1)
-                {
-                    Console.WriteLine("You entered wrong value");
-                    inAppBehavior.ContinueOrQuit(OrderByOrQuit, inAppBehavior.Menu);
-                    return;
-                }
+            if(propIndex < 1 || propIndex > optionsLength + 2)
+            {                
+                Console.WriteLine("You entered wrong value");
+                inAppBehavior.ContinueOrQuit(OrderByOrQuit, inAppBehavior.Menu);
+                return;
+            }
 
+            if (propIndex == optionsLength + 2)
+            {
                 inAppBehavior.Menu();
                 return;
             }
 
+            if (propIndex == optionsLength + 1)
+            {
+                searcher.Search();
+                action(orderBy, lastPropIndex);
+                return;
+            }
+
             asc = lastPropIndex == propIndex ? !asc : true;
-            string orderBy = properties[propIndex - 1].Name;
+            orderBy = properties[propIndex - 1].Name;
             if (!asc)
             {
                 orderBy += " desc";
             }
 
             action(orderBy, propIndex);
-        }        
+        }  
     }
 }

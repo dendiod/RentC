@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomValidator.cs" />
     <Compile Include="GetAndPrint.cs" />
     <Compile Include="InAppBehavior.cs" />
     <Compile Include="InsertUpdate.cs" />
@@ -65,6 +66,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ReadFromConsole.cs" />
+    <Compile Include="Searcher.cs" />
     <Compile Include="Web References\localhost\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

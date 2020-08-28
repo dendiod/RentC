@@ -23,10 +23,12 @@ namespace RentC.DataAccess.Models.QueryModels
         [Required]
         [DateIsValid(ErrorMessage = "Invalid Start Date. Valid format is dd-MM-yyyy")]
         [Today(ErrorMessage = "Error. Start Date is earlier than today")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? StartDate { get; set; }
         [Required]
         [DateIsValid(ErrorMessage = "Invalid End Date. Valid format is dd-MM-yyyy")]
         [Today(ErrorMessage = "Error. End Date is earlier than today")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? EndDate { get; set; }
         public string Location { get; set; }        
         public int Id { get; set; }

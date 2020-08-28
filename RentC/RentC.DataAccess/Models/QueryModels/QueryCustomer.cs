@@ -21,8 +21,11 @@ namespace RentC.DataAccess.Models.QueryModels
         [Required]
         [DateIsValid(ErrorMessage = "Invalid Birth Date. Valid format is dd-MM-yyyy")]
         [Age]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime BirthDate { get; set; }
         public string Location { get; set; }
+        public int ReservationsCount { get; set; }
+        public string Status { get; set; }
 
         public bool IsCreating { get; set; }
         public Customer Customer { get; set; }

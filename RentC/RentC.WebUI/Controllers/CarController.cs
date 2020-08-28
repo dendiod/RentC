@@ -1,6 +1,6 @@
 ﻿using RentC.DataAccess.Contracts;
 using RentC.DataAccess.Models.QueryModels;
-using RentC.DataAccess.Models.ViewModels;
+using RentC.WebUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +12,11 @@ namespace RentC.WebUI.Controllers
 {
     public class CarController : Controller
     {
-        public ActionResult AvailableCars(CarsViewModel<localhost.QueryCar> viewModel, string orderBy = "Id")
+        public ActionResult AvailableCars(CarsViewModel viewModel, string orderBy = "Id")
         {
             if (!ModelState.IsValid)
             {
-                return View(new CarsViewModel<localhost.QueryCar>() { Cars = new List<localhost.QueryCar>() });
+                return View(new CarsViewModel() { Cars = new List<localhost.QueryCar>() });
             }
             localhost.QueryCar car = viewModel.SearchCar ?? new localhost.QueryCar();
             localhost.AvailableCarsService webService = new localhost.AvailableCarsService();

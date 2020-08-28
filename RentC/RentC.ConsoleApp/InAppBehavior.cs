@@ -1,4 +1,5 @@
 ﻿using RentC.DataAccess;
+using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess.Models.Search;
 using System;
 using System.Collections.Generic;
@@ -13,17 +14,10 @@ namespace RentC.ConsoleApp
         private ModelContext modelContext;
         private InsertUpdate insertUpdate;
 
-        private GetAndPrint<SearchReservation> getRents;
-        private GetAndPrint<localhost.QueryCar> getCars;
-        private GetAndPrint<SearchCustomer> getCustomers;
-
         public InAppBehavior()
         {
             modelContext = new ModelContext();
             insertUpdate = new InsertUpdate(modelContext, this);
-            getRents = new GetAndPrint<SearchReservation>(modelContext, this, new SearchReservation());
-            getCars = new GetAndPrint<localhost.QueryCar>(modelContext, this, new localhost.QueryCar());
-            getCustomers = new GetAndPrint<SearchCustomer>(modelContext, this, new SearchCustomer());
         }
         internal void WelcommmingScreen()
         {
@@ -78,9 +72,11 @@ namespace RentC.ConsoleApp
                     insertUpdate.ManageReservations(false);
                     break;
                 case "3":
+                    var getRents = new GetAndPrint<SearchReservation>(modelContext, this, new SearchReservation());
                     getRents.GetReservations();
                     break;
                 case "4":
+                    var getCars = new GetAndPrint<localhost.QueryCar>(modelContext, this, new localhost.QueryCar());
                     getCars.GetAvailableCars();
                     break;
                 case "5":
@@ -90,9 +86,11 @@ namespace RentC.ConsoleApp
                     insertUpdate.ManageCustomers(false);
                     break;
                 case "7":
+                    var getCustomers = new GetAndPrint<SearchCustomer>(modelContext, this, new SearchCustomer());
                     getCustomers.GetCustomers();
                     break;
                 case "8":
+                    //VipCustomer[]customers =  new QueryManager(modelContext).GetVipCustomers("CustomId", new SearchCustomer());
                     break;
                 default:
                     Console.WriteLine("You entered wrong value");

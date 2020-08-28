@@ -21,6 +21,7 @@ namespace RentC.WebUI.localhost {
     using System.Xml.Serialization;
     using System.ComponentModel;
     using RentC.DataAccess.Attributes.Search;
+    using System.ComponentModel.DataAnnotations;
 
 
     /// <remarks/>
@@ -178,6 +179,8 @@ namespace RentC.WebUI.localhost {
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         [SearchToday(ErrorMessage = "Start Date can't be earlier than today")]
+        [SearchDate(ErrorMessage = "Invalid Start Date. Valid format is dd-MM-yyyy")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public System.Nullable<System.DateTime> StartDate {
             get {
                 return this.startDateField;
@@ -189,7 +192,9 @@ namespace RentC.WebUI.localhost {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        [SearchToday(ErrorMessage ="End Date can't be earlier than today")]
+        [SearchToday(ErrorMessage = "End Date can't be earlier than today")]
+        [SearchDate(ErrorMessage = "Invalid End Date. Valid format is dd-MM-yyyy")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public System.Nullable<System.DateTime> EndDate {
             get {
                 return this.endDateField;
