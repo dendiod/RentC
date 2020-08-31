@@ -96,14 +96,18 @@ namespace RentC.ConsoleApp
             DateTime? startDate = reader.ReadDateOptional("Start Date: ");
             DateTime? endDate = reader.ReadDateOptional("End Date: ");
             string location = reader.ReadStringOptional("Location: ");
+            DateTime? monthDate = reader.ReadDateOptional("Any date in month: ");
+            int? reservCount = reader.ReadIntOptional("Reservations Count : ");
 
-            var car = new localhost.QueryCar();
+            var car = new DataAccess.Models.QueryModels.QueryCar();
             car.Plate = plate;
             car.Manufacturer = manufacturer;
             car.Model = model;
             car.StartDate = startDate;
             car.EndDate = endDate;
             car.Location = location;
+            car.MonthDate = monthDate;
+            car.ReservationsCount = reservCount;
 
             SetProps(car);
         }

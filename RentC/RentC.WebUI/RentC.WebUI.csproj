@@ -201,6 +201,9 @@
     <Content Include="Views\Reservation\Update.cshtml" />
     <Content Include="Views\Customer\CustomersList.cshtml" />
     <Content Include="Views\Reservation\ReservationList.cshtml" />
+    <Content Include="Views\Customer\VipCustomersList.cshtml" />
+    <Content Include="Views\Car\RecentCars.cshtml" />
+    <Content Include="Views\Car\RentedCarsInMonth.cshtml" />
     <None Include="Web References\localhost\AvailableCarsService.disco" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

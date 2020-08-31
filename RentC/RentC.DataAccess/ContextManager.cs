@@ -10,16 +10,19 @@ namespace RentC.DataAccess
 {
     public class ContextManager
     {
-        private ModelContext modelContext;
+        private IRepo<Customer> customerRepo;
+        private IRepo<Reservation> reservationRepo;
+        private IRepo<Location> locationRepo;
 
-        public ContextManager(ModelContext modelContext)
+        public ContextManager(IRepo<Customer> customerRepo,
+            IRepo<Reservation> reservationRepo, IRepo<Location> locationRepo)
         {
-            this.modelContext = modelContext;
+            this.customerRepo = customerRepo;
+            this.reservationRepo = reservationRepo;
+            this.locationRepo = locationRepo;
         }
         public void ManageCustomers(bool creating, QueryCustomer queryCustomer)
         {
-            IRepo<Location> locationRepo = new SQLRepo<Location>(modelContext);
-
             int id = queryCustomer.CustomId;
             string location = queryCustomer.Location;
 
@@ -45,13 +48,13 @@ namespace RentC.DataAccess
                 }
             }
 
-            InsertUpdateCommit(creating, c);
+            InsertUpdateCommit(creating, c, customerRepo);
         }
 
         public void ManageReservations(bool creating, QueryReservation queryReservation)
         {
             Reservation r = creating ? new Reservation() : queryReservation.Reservation;
-            if ((bool)queryReservation.IsCreating)
+            if (queryReservation.IsCreating)
             {
                 r.CarId = queryReservation.CarId;
                 r.CustomerId = (int)queryReservation.CustomerId;
@@ -61,12 +64,11 @@ namespace RentC.DataAccess
             r.EndDate = (DateTime)queryReservation.EndDate;
             
 
-            InsertUpdateCommit(creating, r);
+            InsertUpdateCommit(creating, r, reservationRepo);
         }
 
-        private void InsertUpdateCommit<T>(bool creating, T item) where T : BaseEntity
+        private void InsertUpdateCommit<T>(bool creating, T item, IRepo<T> repo) where T : BaseEntity
         {
-            IRepo<T> repo = new SQLRepo<T>(modelContext);
             if (creating)
             {
                 repo.Insert(item);

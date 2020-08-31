@@ -1,0 +1,133 @@
+﻿@model RentC.WebUI.Models.CarsViewModel<RentC.DataAccess.Models.QueryModels.QueryCar>
+@{
+    ViewBag.Title = "Rented Cars In Given Month";
+}
+
+<h2>Rented Cars In Given Month</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <table class="table">
+        <tr>
+            <th>
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Plate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Manufacturer")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Model")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "StartDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "EndDate")
+            </th>
+            <th>
+                <label class="control-label">Sort asc</label>
+                @Html.RadioButton("orderBy", "Location")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Plate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Manufacturer desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Model desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "StartDate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "EndDate desc")
+            </th>
+            <th>
+                <label class="control-label">Sort desc</label>
+                @Html.RadioButton("orderBy", "Location desc")
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Plate, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => Model.SearchCar.Plate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Plate, "", new { @class = "text-danger" })
+
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Manufacturer, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => Model.SearchCar.Manufacturer, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Manufacturer, "", new { @class = "text-danger" })
+
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Model, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => Model.SearchCar.Model, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Model, "", new { @class = "text-danger" })
+
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => Model.SearchCar.Location, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Location, "", new { @class = "text-danger" })
+
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.ReservationsCount, htmlAttributes: new { @class = "control-label col-md-2" })
+            </th>
+            <th>
+                @Html.LabelFor(model => Model.SearchCar.MonthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => Model.SearchCar.MonthDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.MonthDate, "", new { @class = "text-danger" })
+
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Cars)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Plate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Manufacturer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReservationsCount)
+        </td>
+    </tr>
+        }
+
+    </table>
+}

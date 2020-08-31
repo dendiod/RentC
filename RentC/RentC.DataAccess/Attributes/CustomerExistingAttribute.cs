@@ -13,7 +13,11 @@ namespace RentC.DataAccess.Attributes
     {
         public override bool IsValid(object value)
         {
-            var reservation = value as QueryReservation; 
+            var reservation = value as QueryReservation;
+            if (!reservation.IsCreating)
+            {
+                return true;
+            }
             if(value == null)
             {
                 return false;

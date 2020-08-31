@@ -1,10 +1,9 @@
-﻿@model RentC.WebUI.Models.CarsViewModel<RentC.WebUI.localhost.QueryCar>
-
+﻿@model RentC.WebUI.Models.CarsViewModel<RentC.DataAccess.Models.QueryModels.QueryCar>
 @{
-    ViewBag.Title = "AvailableCars";
+    ViewBag.Title = "Most recently rented cars";
 }
 
-<h2>AvailableCars</h2>
+<h2>Most recently rented cars</h2>
 
 @using (Html.BeginForm())
 {
@@ -72,44 +71,44 @@
         <tr>
             <th>
                 @Html.LabelFor(model => Model.SearchCar.Plate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    @Html.EditorFor(model => Model.SearchCar.Plate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.SearchCar.Plate, "", new { @class = "text-danger" })
-                
+                @Html.EditorFor(model => Model.SearchCar.Plate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Plate, "", new { @class = "text-danger" })
+
             </th>
             <th>
                 @Html.LabelFor(model => Model.SearchCar.Manufacturer, htmlAttributes: new { @class = "control-label col-md-2" })
-                
-                    @Html.EditorFor(model => Model.SearchCar.Manufacturer, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.SearchCar.Manufacturer, "", new { @class = "text-danger" })
-                
+
+                @Html.EditorFor(model => Model.SearchCar.Manufacturer, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Manufacturer, "", new { @class = "text-danger" })
+
             </th>
             <th>
                 @Html.LabelFor(model => Model.SearchCar.Model, htmlAttributes: new { @class = "control-label col-md-2" })
-                
-                    @Html.EditorFor(model => Model.SearchCar.Model, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.SearchCar.Model, "", new { @class = "text-danger" })
-                
+
+                @Html.EditorFor(model => Model.SearchCar.Model, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Model, "", new { @class = "text-danger" })
+
             </th>
             <th>
                 @Html.LabelFor(model => Model.SearchCar.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                
-                    @Html.EditorFor(model => Model.SearchCar.StartDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.SearchCar.StartDate, "", new { @class = "text-danger" })
-                
+
+                @Html.EditorFor(model => Model.SearchCar.StartDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.StartDate, "", new { @class = "text-danger" })
+
             </th>
             <th>
                 @Html.LabelFor(model => Model.SearchCar.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                
-                    @Html.EditorFor(model => Model.SearchCar.EndDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.SearchCar.EndDate, "", new { @class = "text-danger" })
-                
+
+                @Html.EditorFor(model => Model.SearchCar.EndDate, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.EndDate, "", new { @class = "text-danger" })
+
             </th>
             <th>
                 @Html.LabelFor(model => Model.SearchCar.Location, htmlAttributes: new { @class = "control-label col-md-2" })
-                
-                    @Html.EditorFor(model => Model.SearchCar.Location, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.SearchCar.Location, "", new { @class = "text-danger" })
-                
+
+                @Html.EditorFor(model => Model.SearchCar.Location, new { @Value = "", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.SearchCar.Location, "", new { @class = "text-danger" })
+
             </th>
         </tr>
 

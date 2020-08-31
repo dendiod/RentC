@@ -1,4 +1,6 @@
 ﻿using RentC.DataAccess;
+using RentC.DataAccess.Contracts;
+using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess.Models.Search;
 using System;
@@ -11,14 +13,30 @@ namespace RentC.ConsoleApp
 {
     public class InAppBehavior
     {
-        private ModelContext modelContext;
         private InsertUpdate insertUpdate;
+        private ModelContext modelContext;
+
+        private IRepo<Car> carRepo;
+        private IRepo<Customer> customerRepo;
+        private IRepo<Reservation> reservationRepo;
+        private IRepo<Location> locationRepo;
+        private IRepo<Model> modelRepo;
+        private IRepo<Manufacturer> manufacurerRepo;
 
         public InAppBehavior()
         {
             modelContext = new ModelContext();
-            insertUpdate = new InsertUpdate(modelContext, this);
+
+            carRepo = new SQLRepo<Car>(modelContext);
+            customerRepo = new SQLRepo<Customer>(modelContext);
+            reservationRepo = new SQLRepo<Reservation>(modelContext);
+            locationRepo = new SQLRepo<Location>(modelContext);
+            modelRepo = new SQLRepo<Model>(modelContext);
+            manufacurerRepo = new SQLRepo<Manufacturer>(modelContext);
+
+            insertUpdate = new InsertUpdate(this, customerRepo, reservationRepo, locationRepo);
         }
+
         internal void WelcommmingScreen()
         {
             StringBuilder sb = new StringBuilder();
@@ -52,14 +70,17 @@ namespace RentC.ConsoleApp
         {
             Console.Clear();
             StringBuilder sb = new StringBuilder();
-            sb.Append("\n\n\n1 Register new Car Rent\n");
-            sb.Append("2 Update Car Rent\n");
-            sb.Append("3 List Rents\n");
-            sb.Append("4 List Available Cars\n");
-            sb.Append("5 Register new Customer\n");
-            sb.Append("6 Update Customer\n");
-            sb.Append("7 List Customers\n");
-            sb.Append("8 Quit\n\n\n");
+            sb.Append("\n\n\n1  Register new Car Rent\n");
+            sb.Append("2  Update Car Rent\n");
+            sb.Append("3  List Rents\n");
+            sb.Append("4  List Available Cars\n");
+            sb.Append("5  Register new Customer\n");
+            sb.Append("6  Update Customer\n");
+            sb.Append("7  List Customers\n");
+            sb.Append("8  Vip Customers\n");
+            sb.Append("9  Most recently rented Cars\n");
+            sb.Append("10 Rented Cars In Given Month\n");
+            sb.Append("11 Quit\n\n\n");
             Console.WriteLine(sb);
 
             string input = Console.ReadLine().Trim();
@@ -72,11 +93,13 @@ namespace RentC.ConsoleApp
                     insertUpdate.ManageReservations(false);
                     break;
                 case "3":
-                    var getRents = new GetAndPrint<SearchReservation>(modelContext, this, new SearchReservation());
+                    var getRents = new GetAndPrint<SearchReservation>(this, new SearchReservation(), carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
                     getRents.GetReservations();
                     break;
                 case "4":
-                    var getCars = new GetAndPrint<localhost.QueryCar>(modelContext, this, new localhost.QueryCar());
+                    var getCars = new GetAndPrint<localhost.QueryCar>(this, new localhost.QueryCar(), carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
                     getCars.GetAvailableCars();
                     break;
                 case "5":
@@ -86,11 +109,26 @@ namespace RentC.ConsoleApp
                     insertUpdate.ManageCustomers(false);
                     break;
                 case "7":
-                    var getCustomers = new GetAndPrint<SearchCustomer>(modelContext, this, new SearchCustomer());
+                    var getCustomers = new GetAndPrint<SearchCustomer>(this, new SearchCustomer(), carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
                     getCustomers.GetCustomers();
                     break;
                 case "8":
-                    //VipCustomer[]customers =  new QueryManager(modelContext).GetVipCustomers("CustomId", new SearchCustomer());
+                    var getVipCustomers = new GetAndPrint<SearchCustomer>(this, new SearchCustomer(), carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
+                    getVipCustomers.GetVipCustomers();
+                    break;
+                case "9":
+                    var getRecentlyCars = new GetAndPrint<QueryCar>(this, new QueryCar(), carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
+                    getRecentlyCars.GetRecentCars();
+                    break;
+                case "10":
+                    var getRentedCarsInMonth = new GetAndPrint<QueryCar>(this, new QueryCar(), carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
+                    getRentedCarsInMonth.GetRentedCarsInMonth();
+                    break;
+                case "11":
                     break;
                 default:
                     Console.WriteLine("You entered wrong value");

@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace RentC.DataAccess.Models.QueryModels
 {
     public class QueryCustomer : BaseEntity, IValidatableObject
-    {  
+    {
         [IdIsValid]
         public int CustomId { get; set; }
         [Required]
         [StringLength(50)]
-        public string Name  { get; set; }
+        public string Name { get; set; }
         [Required]
         [DateIsValid(ErrorMessage = "Invalid Birth Date. Valid format is dd-MM-yyyy")]
         [Age]

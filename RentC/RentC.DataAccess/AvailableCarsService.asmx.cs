@@ -4,6 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Services;
+using System.Xml.Serialization;
+using RentC.DataAccess.Contracts;
+using RentC.DataAccess.Models;
 using RentC.DataAccess.Models.QueryModels;
 
 namespace RentC.DataAccess
@@ -22,7 +25,11 @@ namespace RentC.DataAccess
         [WebMethod]
         public QueryCar[] GetAvailableCars(string orderBy, QueryCar car)
         {
-            QueryManager queryManager = new QueryManager(new ModelContext());
+            ModelContext modelContext = new ModelContext();
+            QueryManager queryManager = new QueryManager(new SQLRepo<Car>(modelContext), new SQLRepo<Customer>(modelContext),
+                new SQLRepo<Reservation>(modelContext), new SQLRepo<Location>(modelContext), 
+                new SQLRepo<Model>(modelContext), new SQLRepo<Manufacturer>(modelContext));
+
             return queryManager.GetAvailableCars(orderBy, car);
         }
     }

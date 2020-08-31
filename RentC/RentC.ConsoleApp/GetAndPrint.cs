@@ -8,6 +8,8 @@ using RentC.DataAccess.Models.QueryModels;
 using RentC.DataAccess;
 using RentC.DataAccess.Models.Search;
 using System.Reflection.Emit;
+using RentC.DataAccess.Models;
+using RentC.DataAccess.Contracts;
 
 namespace RentC.ConsoleApp
 {    
@@ -24,9 +26,12 @@ namespace RentC.ConsoleApp
         private readonly T searchItem;
         string orderBy = "";
 
-        public GetAndPrint(ModelContext modelContext, InAppBehavior inAppBehavior, T searchItem)
+        public GetAndPrint(InAppBehavior inAppBehavior, T searchItem, IRepo<Car> carRepo, IRepo<Customer> customerRepo,
+            IRepo<Reservation> reservationRepo, IRepo<Location> locationRepo,
+            IRepo<Model> modelRepo, IRepo<Manufacturer> manufacurerRepo)
         {
-            queryManager = new QueryManager(modelContext);
+            queryManager = new QueryManager(carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacurerRepo);
             this.inAppBehavior = inAppBehavior;
             this.searchItem = searchItem;
             searcher = new Searcher<T>(inAppBehavior, searchItem);
@@ -75,22 +80,7 @@ namespace RentC.ConsoleApp
 
             Set(propIndex, properties, GetCustomers, labels.Length, orderBy);
             PrepareOrderBy(orderBy);
-        }
-
-        internal void GetVipCustomers(string orderBy = "CustomId", int propIndex = 1)
-        {
-            inAppBehavior.MenuItemEntry("Vip Customers");
-
-            var customers = queryManager.GetCustomers(orderBy, searchItem as SearchCustomer);
-
-            PropertyInfo[] properties = typeof(QueryCustomer).GetProperties();
-            string[] labels = { "Client Id", "Client Name", "Birth Date", "Location" };
-
-            PrintList(labels, properties, customers);
-
-            Set(propIndex, properties, GetCustomers, labels.Length, orderBy);
-            PrepareOrderBy(orderBy);
-        }
+        }        
 
         internal void GetReservations(string orderBy = "Id", int propIndex = 0)
         {
@@ -104,6 +94,52 @@ namespace RentC.ConsoleApp
             PrintList(labels, properties, reservations);
 
             Set(propIndex, properties, GetReservations, labels.Length, orderBy);
+            PrepareOrderBy(orderBy);
+        }
+
+        internal void GetVipCustomers(string orderBy = "CustomId", int propIndex = 1)
+        {
+            inAppBehavior.MenuItemEntry("Vip Customers");
+
+            var customers = queryManager.GetVipCustomers(orderBy, searchItem as SearchCustomer);
+
+            PropertyInfo[] properties = typeof(QueryCustomer).GetProperties();
+            string[] labels = { "Client Id", "Client Name", "Birth Date", "Location", "Reservations Count", "Status" };
+
+            PrintList(labels, properties, customers);
+
+            Set(propIndex, properties, GetVipCustomers, labels.Length, orderBy);
+            PrepareOrderBy(orderBy);
+        }
+
+        internal void GetRecentCars(string orderBy = "Id", int propIndex = 0)
+        {
+            inAppBehavior.MenuItemEntry("Most recently rented Cars");
+
+            var cars = queryManager.GetRecentCars(orderBy, searchItem as QueryCar);
+
+            PropertyInfo[] properties = typeof(QueryCar).GetProperties();
+            string[] labels = { "Car Plate", "Car Manufacturer", "Car Model", "Start Date", "EndDate", "City" };
+
+            PrintList(labels, properties, cars);
+
+            Set(propIndex, properties, GetRecentCars, labels.Length, orderBy);
+            PrepareOrderBy(orderBy);
+        }
+
+        internal void GetRentedCarsInMonth(string orderBy = "ReservationsCount", int propIndex = 0)
+        {
+            inAppBehavior.MenuItemEntry("Rented Cars In Given Month");
+
+            var cars = queryManager.GetCarsInMonth(orderBy, searchItem as QueryCar);
+
+            PropertyInfo[] properties = typeof(DataAccess.Models.QueryModels.QueryCar).GetProperties();
+            string[] labels = { "Car Plate", "Car Manufacturer", "Car Model",
+                "Start Date", "End Date", "City", "Month Date", "Reservations Count" };
+
+            PrintList(labels, properties, cars);
+
+            Set(propIndex, properties, GetRentedCarsInMonth, labels.Length, orderBy);
             PrepareOrderBy(orderBy);
         }
 
@@ -171,6 +207,6 @@ namespace RentC.ConsoleApp
             }
 
             action(orderBy, propIndex);
-        }  
+        }        
     }
 }

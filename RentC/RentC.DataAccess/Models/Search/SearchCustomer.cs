@@ -15,5 +15,7 @@ namespace RentC.DataAccess.Models.Search
         [SearchDate(ErrorMessage = "Invalid Birth Date. Valid format is dd-MM-yyyy")]
         public DateTime? BirthDate { get; set; }
         public string Location { get; set; }
+        public int? ReservationsCount { get; set; }
+        public string Status { get; set; }
     }
 }

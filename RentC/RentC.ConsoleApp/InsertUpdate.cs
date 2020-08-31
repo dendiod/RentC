@@ -15,17 +15,16 @@ namespace RentC.ConsoleApp
 {
     public class InsertUpdate
     {
-        private ModelContext modelContext;
         private InAppBehavior inAppBehavior;
         private ContextManager contextManager;
         private ReadFromConsole reader;
         private CustomValidator validator;
 
-        public InsertUpdate(ModelContext modelContext, InAppBehavior inAppBehavior)
+        public InsertUpdate(InAppBehavior inAppBehavior, IRepo<Customer> customerRepo,
+            IRepo<Reservation> reservationRepo, IRepo<Location> locationRepo)
         {
-            this.modelContext = modelContext;
             this.inAppBehavior = inAppBehavior;
-            this.contextManager = new ContextManager(modelContext);
+            contextManager = new ContextManager(customerRepo, reservationRepo, locationRepo);
             reader = new ReadFromConsole();
             validator = new CustomValidator(inAppBehavior);
         }         

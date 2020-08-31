@@ -88,8 +88,8 @@ namespace RentC.DataAccess.Models.QueryModels
             }            
 
             var r = reservationRepo.FirstOrDefault(x => x.CarId == car.Id && (
-            x.StartDate >= StartDate && x.StartDate <= EndDate ||
-            x.EndDate >= StartDate && x.EndDate <= EndDate));
+            StartDate >= x.StartDate && StartDate <= x.EndDate ||
+            EndDate >= x.StartDate && EndDate <= x.EndDate));
 
             if (r != null && (bool)IsCreating || ((bool)!IsCreating && r!= null && r.Id != reservation.Id))
             {

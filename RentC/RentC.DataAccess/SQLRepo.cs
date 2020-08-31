@@ -59,11 +59,11 @@ namespace RentC.DataAccess
         {
             dbSet.Attach(t);
             context.Entry(t).State = EntityState.Modified;
-        }   
-        
-        public ModelContext GetContext()
+        }
+
+        public IEnumerable<T> Where(Func<T, bool> predicate)
         {
-            return context;
+            return dbSet.Where(predicate);
         }
     }
 }

@@ -16,6 +16,6 @@ namespace RentC.DataAccess.Contracts
         T FirstOrDefault(Func<T, bool> predicate);
         void Insert(T t);
         void Update(T t);
-        ModelContext GetContext();
+        IEnumerable<T> Where(Func<T, bool> predicate);
     }
 }

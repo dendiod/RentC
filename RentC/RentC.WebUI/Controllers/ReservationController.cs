@@ -16,13 +16,28 @@ namespace RentC.WebUI.Controllers
     public class ReservationController : Controller
     {
         private readonly ContextManager contextManager;
-        private readonly IRepo<Reservation> repo;
 
-        public ReservationController(IRepo<Reservation> repo)
+        private IRepo<Car> carRepo;
+        private IRepo<Customer> customerRepo;
+        private IRepo<Reservation> reservationRepo;
+        private IRepo<Location> locationRepo;
+        private IRepo<Model> modelRepo;
+        private IRepo<Manufacturer> manufacturerRepo;
+
+        public ReservationController(IRepo<Car> carRepo, IRepo<Customer> customerRepo,
+            IRepo<Reservation> reservationRepo, IRepo<Location> locationRepo,
+            IRepo<Model> modelRepo, IRepo<Manufacturer> manufacturerRepo)
         {
-            this.repo = repo;
-            contextManager = new ContextManager(repo.GetContext());
+            this.carRepo = carRepo;
+            this.customerRepo = customerRepo;
+            this.reservationRepo = reservationRepo;
+            this.locationRepo = locationRepo;
+            this.modelRepo = modelRepo;
+            this.manufacturerRepo = manufacturerRepo;
+
+            contextManager = new ContextManager(customerRepo, reservationRepo, locationRepo);
         }
+
         public ActionResult Create()
         {
             return View();
@@ -68,7 +83,8 @@ namespace RentC.WebUI.Controllers
                 return View(new ReservationViewModel() { Reservations = new List<QueryReservation>() });
             }
             SearchReservation r = viewModel.SearchReservation ?? new SearchReservation();
-            QueryManager queryManager = new QueryManager(repo.GetContext());
+            QueryManager queryManager = new QueryManager(carRepo, customerRepo, reservationRepo, locationRepo,
+                modelRepo, manufacturerRepo);
             QueryReservation[] reservations = queryManager.GetReservations(orderBy, r);
 
             viewModel.Reservations = reservations;
